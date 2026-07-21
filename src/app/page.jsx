@@ -4,13 +4,14 @@ import "./home.css";
 import { useRef } from "react";
 import { gsap } from "gsap";
 import { useGSAP } from "@gsap/react";
+import Vision from "@/components/vision/vision";
 
 gsap.registerPlugin(useGSAP);
 
 export default function Home() {
     const page = useRef(null);
 
-   useGSAP(() => {
+    useGSAP(() => {
         const q = gsap.utils.selector(page);
 
         const hero = q("[data-hero]")[0].getBoundingClientRect();
@@ -80,6 +81,7 @@ export default function Home() {
                     <div className="hero__media-wrapper" data-target />
                 </div>
             </section>
+            <Vision/>
         </main>
     );
 }

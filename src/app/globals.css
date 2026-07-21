@@ -9,6 +9,8 @@
     --content-100: #000000;
     --content-200: #191919;
 
+    --bg-mono: #ffffff;
+
 }
 *{
     margin: 0;
@@ -46,14 +48,14 @@ h3,
 h4,
 h5,
 h6{
-    font-size: clamp(3rem, 6vw, 5rem);
+    font-size: clamp(2.5rem, 6vw, 5rem);
     font-weight:350;
     line-height:96%;
     letter-spacing:-2%;
 }
 
 p{
-    font-size:2.5rem;
+     font-size:clamp(1.5rem, 3vw, 2.5rem);
     font-weight:300;
     line-height:98%;
     letter-spacing:0;
@@ -77,9 +79,14 @@ p.xs{
 
 .mono{
     font-size:.875rem;
+    color: var(--content-200);
     text-transform: uppercase;
     font-family: 200;
     letter-spacing: .05%;
     line-height:100%;
+    background-color: var(--bg-mono);
+    width:fit-content;
+    padding:.25rem .5rem;
+    border-radius: .375rem;
 }
 
