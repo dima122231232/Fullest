@@ -1,5 +1,5 @@
 .vision{
-    height:100svh;
+    min-height:100svh;
     width:100%;
     position: relative;
     display: flex;
@@ -11,6 +11,8 @@
     display: flex;
     flex-direction: column;
     gap:3rem;
+    max-width:2000px;
+    margin:0 auto;
 }
 .vision__mono{
     margin:0 auto;
@@ -19,11 +21,13 @@
     display: flex;
     justify-content: space-between;
     width:100%;
+    padding:0 2rem;
 }
 .vision__card{
     display: flex;
     flex-direction: column;
     gap:1.625rem;
+    opacity:0;
 }
 .vision__images{
     display: flex;
@@ -40,20 +44,89 @@
 }
 .vision-title{max-width:700px;text-align: center;margin:0 auto;}
 
+
+.vision__timeline-desk{
+    position: relative;
+    transform:translateY(-2rem);
+    display: flex;
+    align-items: center;
+}
+.vision__timeline-desk .circle{
+    width:10px;
+    aspect-ratio:1 / 1 ;
+    border-radius: 50%;
+    background-color: #000;
+    scale:0;
+    will-change: scale;
+}
+.vision__timeline-desk .circle-animation{
+    position: absolute;
+    left:0%;
+}
+.vision__timeline-desk .dash{
+    border-top: 1px dashed #000;
+    flex: 1;
+    clip-path: polygon(0 0, 0 0, 0 100%, 0% 100%);
+    will-change: clip-path;
+}
+
+.vision__divider {
+    grid-column: 1 / -1;
+    width: 100%;
+    display: none;
+    transform: translateY(-3.5rem);
+    height: 20px;
+    align-items: center;    
+    position: relative;
+}
+.vision__divider .dash{
+    clip-path: polygon(0 0, 0 0, 0 100%, 0% 100%);
+    border-top: 1px dashed #000;
+    width: 100%;
+}
+.divider-circle{
+    height:10px;
+    aspect-ratio: 1 / 1;
+    border-radius: 50%;
+    background-color: #000;
+    position: absolute;
+    left:0%;
+    will-change: transform , left;
+}
+.divider-circle--animation{
+    scale:0;
+}
+
+.vision-block--container{
+    height:100svh;
+    display: flex;
+    flex-direction: column;
+    gap:1rem;
+    align-items: center;
+    justify-content: center;
+}
+.vision-block--container h2{
+    text-align: center;
+    max-width: 855px;
+}
 @media (max-width:1200px) {
     .vision__cards{
         display:grid;
         grid-template-columns:repeat(2, minmax(0, 1fr));
-        row-gap:3rem;
+        row-gap:calc(1.5rem - 10px);
         column-gap:0rem;
+        padding:0;
     }
-    .vision__card:last-child{
+    .vision__card:nth-child(7){
         grid-column:1 / -1;
         justify-self:center;
     }
+    .vision__timeline-desk{display: none;}
+    .vision__divider{display: flex;}
+    
+    
 }
 @media (max-width:800px) {
-    .vision{height:auto;}
-    .vision__container{padding:0 1rem; gap:2rem;margin-top:3rem;}
+    .vision__container{padding:0 1rem; gap:2rem;}
     .vision__images{gap:1rem;}
 }
