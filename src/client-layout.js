@@ -5,7 +5,8 @@ import { ReactLenis } from "lenis/react";
 
 const MOBILE_BREAKPOINT = 1000;
 
-const LENIS_EASING = (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t));
+const LENIS_EASING = (t) =>
+  Math.min(1, 1.001 - Math.pow(2, -10 * t));
 
 const LENIS_SHARED = {
   easing: LENIS_EASING,
@@ -39,20 +40,23 @@ export default function ClientLayout({ children }) {
   const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
-    const handleResize = () => {
-      setIsMobile(window.innerWidth <= MOBILE_BREAKPOINT);
-    };
+    const media = window.matchMedia(
+      `(max-width: ${MOBILE_BREAKPOINT}px)`
+    );
 
-    handleResize();
-    window.addEventListener("resize", handleResize);
+    const update = () => setIsMobile(media.matches);
 
-    return () => window.removeEventListener("resize", handleResize);
+    update();
+    media.addEventListener("change", update);
+
+    return () => media.removeEventListener("change", update);
   }, []);
 
-  const lenisOptions = isMobile ? LENIS_MOBILE : LENIS_DESKTOP;
-
   return (
-    <ReactLenis root options={lenisOptions}>
+    <ReactLenis
+      root
+      options={isMobile ? LENIS_MOBILE : LENIS_DESKTOP}
+    >
       {children}
     </ReactLenis>
   );
