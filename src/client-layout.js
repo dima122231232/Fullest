@@ -52,10 +52,10 @@ export default function ClientLayout({ children }) {
         };
 
     return (
-        <ReactLenis root options={scrollSettings}>
+        // <ReactLenis root options={scrollSettings}>
             <div className="page" ref={pageRef}>
                 {children}
             </div>
-        </ReactLenis>
+        // </ReactLenis>
     );
 }
