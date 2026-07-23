@@ -1,61 +1,46 @@
 "use client";
-import { useEffect, useState, useRef } from "react";
+
+import { useEffect, useMemo, useState } from "react";
 import { ReactLenis } from "lenis/react";
 
 export default function ClientLayout({ children }) {
-    const pageRef = useRef();
-
     const [isMobile, setIsMobile] = useState(false);
 
     useEffect(() => {
-        const checkMobile = () => {
-        setIsMobile(window.innerWidth <= 1000);
-        };
+        const media = window.matchMedia("(max-width: 1000px)");
 
-        checkMobile();
+        const update = () => setIsMobile(media.matches);
 
-        window.addEventListener("resize", checkMobile);
+        update();
 
-        return () => window.removeEventListener("resize", checkMobile);
+        media.addEventListener("change", update);
+
+        return () => media.removeEventListener("change", update);
     }, []);
 
-    const scrollSettings = isMobile
-        ? {
-            duration: 0.8,
-            easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-            direction: "vertical",
-            gestureDirection: "vertical",
-            smooth: true,
-            smoothTouch: true,
-            touchMultiplier: 1.5,
-            infinite: false,
-            lerp: 0.09,
-            wheelMultiplier: 1,
-            orientation: "vertical",
-            smoothWheel: true,
-            syncTouch: true,
-        }
-        : {
-            duration: 1.2,
-            easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-            direction: "vertical",
-            gestureDirection: "vertical",
-            smooth: true,
-            smoothTouch: false,
-            touchMultiplier: 2,
-            infinite: false,
-            lerp: 0.1,
-            wheelMultiplier: 1,
-            orientation: "vertical",
-            smoothWheel: true,
-            syncTouch: true,
-        };
+    const scrollSettings = useMemo(
+        () =>
+            isMobile
+                ? {
+                      lerp: 0.15,
+                      wheelMultiplier: 1,
+                      touchMultiplier: 1,
+                      smoothWheel: true,
+                      syncTouch: false,
+                  }
+                : {
+                      lerp: 0.1,
+                      wheelMultiplier: 1,
+                      smoothWheel: true,
+                  },
+        [isMobile]
+    );
 
     return (
-        // <ReactLenis root options={scrollSettings}>
-            <div className="page" ref={pageRef}>
+        <ReactLenis root options={scrollSettings}>
+            <div className="page">
                 {children}
             </div>
-        // </ReactLenis>
+        </ReactLenis>
     );
 }
