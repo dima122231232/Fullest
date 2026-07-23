@@ -31,16 +31,11 @@ export default function ClientLayout({ children }) {
                 : {
     smoothWheel: true,
 
-    // Touch
     syncTouch: true,
-    syncTouchLerp: 0.12,
-    touchInertiaMultiplier: 8,
+    syncTouchLerp: 0.1,
+    touchInertiaMultiplier: 5,
 
-    // Общая плавность
-    lerp: 0.08,
-
-    wheelMultiplier: 1,
-    touchMultiplier: 1,
+    lerp: 0.06,
                   },
         [isMobile]
     );
