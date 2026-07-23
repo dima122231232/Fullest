@@ -1,48 +1,59 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { ReactLenis } from "lenis/react";
 
+const MOBILE_BREAKPOINT = 1000;
+
+const LENIS_EASING = (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t));
+
+const LENIS_SHARED = {
+  easing: LENIS_EASING,
+  direction: "vertical",
+  gestureDirection: "vertical",
+  smooth: true,
+  infinite: false,
+  wheelMultiplier: 1,
+  orientation: "vertical",
+  smoothWheel: true,
+  syncTouch: true,
+};
+
+const LENIS_MOBILE = {
+  ...LENIS_SHARED,
+  duration: 0.8,
+  smoothTouch: true,
+  touchMultiplier: 1.5,
+  lerp: 0.09,
+};
+
+const LENIS_DESKTOP = {
+  ...LENIS_SHARED,
+  duration: 1.2,
+  smoothTouch: false,
+  touchMultiplier: 2,
+  lerp: 0.1,
+};
+
 export default function ClientLayout({ children }) {
-    const [isMobile, setIsMobile] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
 
-    useEffect(() => {
-        const media = window.matchMedia("(max-width: 1000px)");
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= MOBILE_BREAKPOINT);
+    };
 
-        const update = () => setIsMobile(media.matches);
+    handleResize();
+    window.addEventListener("resize", handleResize);
 
-        update();
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
-        media.addEventListener("change", update);
+  const lenisOptions = isMobile ? LENIS_MOBILE : LENIS_DESKTOP;
 
-        return () => media.removeEventListener("change", update);
-    }, []);
-
-    const scrollSettings = useMemo(
-        () =>
-            !isMobile
-                ? {
-                      lerp: 0.15,
-                      wheelMultiplier: 1,
-                      touchMultiplier: 1,
-                      smoothWheel: true,
-                      syncTouch: false,
-                  }
-                : {
-                    smoothWheel: true,
-                    syncTouch: true,
-                    syncTouchLerp: 0.1,
-                    touchInertiaMultiplier: 5,
-                    lerp: 0.06,
-                  },
-        [isMobile]
-    );
-
-    return (
-        <ReactLenis root options={scrollSettings}>
-            <div className="page">
-                {children}
-            </div>
-        </ReactLenis>
-    );
+  return (
+    <ReactLenis root options={lenisOptions}>
+      {children}
+    </ReactLenis>
+  );
 }
