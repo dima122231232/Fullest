@@ -22,19 +22,22 @@ export default function ClientLayout({ children }) {
         () =>
             isMobile
                 ? {
-                      lerp: 0.15,
-                      wheelMultiplier: 1,
-                      touchMultiplier: 1,
-                      smoothWheel: true,
-                      syncTouch: false,
-                  }
-                : {
                     smoothWheel: true,
+
+                    lerp: 0.08,
+
                     syncTouch: true,
                     syncTouchLerp: 0.1,
                     touchInertiaMultiplier: 5,
-                    lerp: 0.06,
-                  },
+
+                    wheelMultiplier: 1,
+                    touchMultiplier: 1,
+                }
+                : {
+                    smoothWheel: true,
+                    lerp: 0.08,
+                    wheelMultiplier: 1,
+                },
         [isMobile]
     );
 
