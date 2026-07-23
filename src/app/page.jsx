@@ -59,7 +59,7 @@ export default function Home() {
                     <video
                         data-video
                         className="hero__video"
-                        src="/home/video/video.mp4"
+                        src="/home/video/"
                         muted
                         loop
                         playsInline
