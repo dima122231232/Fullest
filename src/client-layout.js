@@ -1,7 +1,26 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import { ReactLenis } from "lenis/react";
+import { ReactLenis, useLenis } from "lenis/react";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+function LenisScrollTriggerSync() {
+    const lenis = useLenis();
+
+    useEffect(() => {
+        if (!lenis) return;
+
+        const update = () => ScrollTrigger.update();
+
+        lenis.on("scroll", update);
+
+        return () => {
+            lenis.off("scroll", update);
+        };
+    }, [lenis]);
+
+    return null;
+}
 
 export default function ClientLayout({ children }) {
     const [isMobile, setIsMobile] = useState(false);
@@ -22,27 +41,25 @@ export default function ClientLayout({ children }) {
         () =>
             isMobile
                 ? {
+                      lerp: 0.15,
+                      wheelMultiplier: 1,
+                      touchMultiplier: 1,
+                      smoothWheel: true,
+                      syncTouch: false,
+                  }
+                : {
                     smoothWheel: true,
-
-                    lerp: 0.08,
-
                     syncTouch: true,
                     syncTouchLerp: 0.1,
                     touchInertiaMultiplier: 5,
-
-                    wheelMultiplier: 1,
-                    touchMultiplier: 1,
-                }
-                : {
-                    smoothWheel: true,
-                    lerp: 0.08,
-                    wheelMultiplier: 1,
-                },
+                    lerp: 0.06,
+                  },
         [isMobile]
     );
 
     return (
         <ReactLenis root options={scrollSettings}>
+            <LenisScrollTriggerSync />
             <div className="page">
                 {children}
             </div>

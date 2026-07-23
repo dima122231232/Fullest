@@ -27,7 +27,7 @@ export default function Vision(){
             end:`+=${window.innerHeight * (isMobile ? 3.5 : 2)}px`,
             pin:true,
             pinSpacing:true,
-            scrub:1,
+            scrub:true,
             onToggle: (self) => {
                 if (self.isActive) {
                     gsap.to(circles, { scale: 1, duration: .2 });
