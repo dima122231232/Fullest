@@ -9,69 +9,113 @@ gsap.registerPlugin(ScrollTrigger);
 export default function Vision(){
     const section = useRef(null);
 
-    useGSAP(() =>{
-        const isMobile = window.innerWidth < 1200;
-        const card = document.querySelectorAll(".vision__card");
-        const dash = document.querySelector(".vision__timeline-desk .dash");
-        const circles = document.querySelectorAll(".circle");
-        const circle = document.querySelectorAll(".divider-circle");
-        const dots = document.querySelectorAll(".divider-circle--animation");
+   useGSAP(() => {
+    const isMobile = window.innerWidth < 1200;
 
-        ScrollTrigger.create({
-            trigger:section.current,
-            start:"top top",
-            end:`+=${window.innerHeight * (isMobile ? 3.5 : 2)}px`,
-            pin:true,
-            pinSpacing:true,
-            scrub:1,
-            onToggle: (self) => {
-                if (self.isActive) {
-                    gsap.to(circles, { scale: 1, duration: .2 });
-                    gsap.to(circle[0], { scale: 1, duration: .2 });
-                } else if (self.direction === -1) {
-                    gsap.to(circles, { scale: 0, duration: .2 });
-                    gsap.to(circle[0], { scale: 0, duration: .2 });
-                }
-            },
-            onUpdate: (self) =>{
-                const circleAnimation = document.querySelector(".circle-animation")
-                const scrollProgress = self.progress;
-                const segment = 1 / card.length;
+    const cards = gsap.utils.toArray(".vision__card");
+    const desktopDash = document.querySelector(".vision__timeline-desk .dash");
+    const circles = gsap.utils.toArray(".circle");
+    const dividerCircles = gsap.utils.toArray(".divider-circle");
+    const dots = gsap.utils.toArray(".divider-circle--animation");
+    const circleAnimation = document.querySelector(".circle-animation");
 
-                gsap.set(circleAnimation,{left:`${gsap.utils.interpolate(0, 100, scrollProgress)}%`})
-                if (!isMobile) {
-                    gsap.set(dash,{clipPath: `polygon(0 0, ${scrollProgress*100}% 0, ${scrollProgress*100}% 100%, 0% 100%)`})
-                } else {
-                    const dashes = document.querySelectorAll(".vision__divider .dash");
-                    const part = 1 / dashes.length;
+    const mobileDashes = isMobile
+        ? gsap.utils.toArray(".vision__divider .dash")
+        : [];
 
-                    dashes.forEach((dash, i) => {
-                        const progress = gsap.utils.clamp(0, 1, (scrollProgress - i * part) / part);
+    const segment = 1 / cards.length;
+    const part = isMobile ? 1 / mobileDashes.length : 0;
 
-                        gsap.set(dash, {clipPath: `polygon(0 0, ${progress * 100}% 0, ${progress * 100}% 100%, 0 100%)`});
-                        gsap.set(dots[i], {left: `max(0px, calc(${progress * 100}% - 5px))`});
+    const setCircleLeft = gsap.quickSetter(circleAnimation, "left", "%");
+    const setOpacity = cards.map(card => gsap.quickSetter(card, "opacity"));
 
-                        const active = i === dashes.length - 1 ? progress > 0 : progress > 0 && progress < 1;
+    ScrollTrigger.create({
+        trigger: section.current,
+        start: "top top",
+        end: `+=${window.innerHeight * (isMobile ? 3.5 : 2)}`,
+        pin: true,
+        pinSpacing: true,
+        scrub: 1,
 
-                        if (dots[i]._active !== active) {
-                            dots[i]._active = active;
+        onToggle(self) {
+            const scale = self.isActive ? 1 : self.direction === -1 ? 0 : null;
 
-                            gsap.to(dots[i], {scale: active ? 1 : 0,duration: 0.2,overwrite: true,ease: "power1.out"});
-                        }
-                    });
-                    
-                }
+            if (scale !== null) {
+                gsap.to(circles, {
+                    scale,
+                    duration: .2,
+                    overwrite: true
+                });
 
-                card.forEach((item, index) => {
-                    const localProgress = gsap.utils.clamp(0 , 1, (scrollProgress - (index * segment + segment * (isMobile ? 0.15 : 0.5))) / (segment * (isMobile ? 0.35 : 0.5)));
-                    gsap.set(item,{opacity:localProgress})
-                })
-                
+                gsap.to(dividerCircles[0], {
+                    scale,
+                    duration: .2,
+                    overwrite: true
+                });
             }
-        })
+        },
 
+        onUpdate(self) {
+            const progress = self.progress;
 
-    }, {scope: section})
+            setCircleLeft(progress * 100);
+
+            if (!isMobile) {
+                gsap.set(desktopDash, {
+                    clipPath: `polygon(0 0, ${progress * 100}% 0, ${progress * 100}% 100%, 0 100%)`
+                });
+            } else {
+                mobileDashes.forEach((dash, i) => {
+                    const local = gsap.utils.clamp(
+                        0,
+                        1,
+                        (progress - i * part) / part
+                    );
+
+                    gsap.set(dash, {
+                        clipPath: `polygon(0 0, ${local * 100}% 0, ${local * 100}% 100%, 0 100%)`
+                    });
+
+                    gsap.set(dots[i], {
+                        left: `max(0px, calc(${local * 100}% - 5px))`
+                    });
+
+                    const active =
+                        i === mobileDashes.length - 1
+                            ? local > 0
+                            : local > 0 && local < 1;
+
+                    if (dots[i]._active !== active) {
+                        dots[i]._active = active;
+
+                        gsap.to(dots[i], {
+                            scale: active ? 1 : 0,
+                            duration: .2,
+                            overwrite: true,
+                            ease: "power1.out"
+                        });
+                    }
+                });
+            }
+
+            cards.forEach((_, index) => {
+                const local = gsap.utils.clamp(
+                    0,
+                    1,
+                    (
+                        progress -
+                        (index * segment +
+                            segment * (isMobile ? .15 : .5))
+                    ) /
+                        (segment * (isMobile ? .35 : .5))
+                );
+
+                setOpacity[index](local);
+            });
+        }
+    });
+
+}, { scope: section });
     
     
     return(
