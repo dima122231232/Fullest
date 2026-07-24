@@ -20,15 +20,17 @@ export default function Vision(){
         const dots = q(".divider-circle--animation");
         const circleAnimation = q(".circle-animation")[0];
         const dashes = q(".vision__divider .dash");
+        const dashesWidth = dashes[0].offsetWidth
         const part = 1 / dashes.length;
 
+        
         ScrollTrigger.create({
             trigger:section.current,
             start:"top top",
             end:() => `+=${window.innerHeight * (isMobile ? 1.5 : 2)}px`,
             pin:isMobile ? false : true,
             pinSpacing:true,
-            scrub:.2,
+            scrub:1,
             invalidateOnRefresh: true,
             onToggle: (self) => {
                 if (self.isActive) {
@@ -50,7 +52,9 @@ export default function Vision(){
                         const progress = gsap.utils.clamp(0, 1, (scrollProgress - i * part) / part);
 
                         gsap.set(dash, {clipPath: `polygon(0 0, ${progress * 100}% 0, ${progress * 100}% 100%, 0 100%)`});
-                        gsap.set(dots[i], {left: `max(0px, calc(${progress * 100}% - 5px))`});
+                        gsap.to(dots[i], {x: Math.max(0, dashesWidth * progress - 5),  duration: 0.15,
+    overwrite: true,
+    ease: "power2.out"});
 
                         const active = i === dashes.length - 1 ? progress > 0 : progress > 0 && progress < 1;
 

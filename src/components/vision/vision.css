@@ -90,8 +90,7 @@
     border-radius: 50%;
     background-color: #000;
     position: absolute;
-    left:0%;
-    will-change: transform , left;
+    will-change: transform;
 }
 .divider-circle--animation{
     scale:0;
