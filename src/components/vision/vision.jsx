@@ -25,7 +25,7 @@ export default function Vision(){
 
         const anim = {
             duration: .2,
-            ease: "power1.out"
+            ease: "none"
         };
         
         ScrollTrigger.create({
@@ -62,7 +62,7 @@ export default function Vision(){
                         if (dots[i]._active !== active) {
                             dots[i]._active = active;
 
-                            gsap.to(dots[i], {scale: active ? 1 : 0,duration: 0.2,overwrite: true,ease: "power1.out"});
+                            gsap.to(dots[i], {scale: active ? 1 : 0,overwrite: true, ...anim});
                         }
                     });
                     
