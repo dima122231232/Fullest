@@ -10,15 +10,16 @@ export default function Vision(){
     const section = useRef(null);
 
     useGSAP(() =>{
+        const q = gsap.utils.selector(section);
         const isMobile = window.innerWidth < 1200;
-        const card = document.querySelectorAll(".vision__card");
+        const card = q(".vision__card");
         const segment = 1 / card.length;
-        const dash = document.querySelector(".vision__timeline-desk .dash");
-        const circles = document.querySelectorAll(".circle");
-        const circle = document.querySelectorAll(".divider-circle");
-        const dots = document.querySelectorAll(".divider-circle--animation");
-        const circleAnimation = document.querySelector(".circle-animation")
-        const dashes = document.querySelectorAll(".vision__divider .dash");
+        const dash = q(".vision__timeline-desk .dash")[0];
+        const circles = q(".circle");
+        const circle = q(".divider-circle");
+        const dots = q(".divider-circle--animation");
+        const circleAnimation = q(".circle-animation")[0];
+        const dashes = q(".vision__divider .dash");
         const part = 1 / dashes.length;
 
         ScrollTrigger.create({
@@ -28,6 +29,7 @@ export default function Vision(){
             pin:true,
             pinSpacing:true,
             scrub:true,
+            invalidateOnRefresh: true,
             onToggle: (self) => {
                 if (self.isActive) {
                     gsap.to(circles, { scale: 1, duration: .2 });
@@ -69,11 +71,11 @@ export default function Vision(){
             }
         })
 
-        window.addEventListener("resize", ScrollTrigger.refresh());
+        const handleResize = () => ScrollTrigger.refresh();
+        window.addEventListener("resize", handleResize);
         return () => {
-            window.removeEventListener("resize", ScrollTrigger.refresh());
+            window.removeEventListener("resize", handleResize);
         };
-
     }, {scope: section})
     
     
