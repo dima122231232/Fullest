@@ -23,6 +23,10 @@ export default function Vision(){
         const dashesWidth = dashes[0].offsetWidth
         const part = 1 / dashes.length;
 
+        const anim = {
+            duration: .2,
+            ease: "power1.out"
+        };
         
         ScrollTrigger.create({
             trigger:section.current,
@@ -30,7 +34,7 @@ export default function Vision(){
             end:() => `+=${window.innerHeight * (isMobile ? 1.5 : 2)}px`,
             pin:isMobile ? false : true,
             pinSpacing:true,
-            scrub:1,
+            scrub:false,
             invalidateOnRefresh: true,
             onToggle: (self) => {
                 if (self.isActive) {
@@ -43,16 +47,15 @@ export default function Vision(){
             },
             onUpdate: (self) =>{
                 const scrollProgress = self.progress;
-
-                gsap.to(circleAnimation,{left:`${gsap.utils.interpolate(0, 100, scrollProgress)}%`})
                 if (!isMobile) {
-                    gsap.to(dash,{clipPath: `polygon(0 0, ${scrollProgress*100}% 0, ${scrollProgress*100}% 100%, 0% 100%)`})
+                    gsap.to(circleAnimation,{left:`${gsap.utils.interpolate(0, 100, scrollProgress)}%`, ...anim})
+                    gsap.to(dash,{clipPath: `polygon(0 0, ${scrollProgress*100}% 0, ${scrollProgress*100}% 100%, 0% 100%)`, ...anim})
                 } else {
                     dashes.forEach((dash, i) => {
                         const progress = gsap.utils.clamp(0, 1, (scrollProgress - i * part) / part);
 
-                        gsap.to(dash, {clipPath: `polygon(0 0, ${progress * 100}% 0, ${progress * 100}% 100%, 0 100%)`});
-                        gsap.to(dots[i], {x: Math.max(0, dashesWidth * progress - 5)});
+                        gsap.to(dash, {clipPath: `polygon(0 0, ${progress * 100}% 0, ${progress * 100}% 100%, 0 100%)`, ...anim});
+                        gsap.to(dots[i], {x: Math.max(0, dashesWidth * progress - 5), ...anim});
 
                         const active = i === dashes.length - 1 ? progress > 0 : progress > 0 && progress < 1;
 
