@@ -34,7 +34,7 @@ export default function Vision(){
             end:() => `+=${window.innerHeight * (isMobile ? 1.5 : 2)}px`,
             pin:isMobile ? false : true,
             pinSpacing:true,
-            scrub:false,
+            scrub:1,
             invalidateOnRefresh: true,
             onToggle: (self) => {
                 if (self.isActive) {
