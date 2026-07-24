@@ -9,21 +9,34 @@ gsap.registerPlugin(ScrollTrigger);
 
 export default function LenisProvider({ children }) {
     useEffect(() => {
-        const lenis = new Lenis({
-            autoRaf: false,
+        const isTouch =
+            window.matchMedia("(pointer: coarse)").matches ||
+            navigator.maxTouchPoints > 0;
 
-            duration: 1.2,
+        const lenis = new Lenis(
+            isTouch
+                ? {
+                      autoRaf: false,
 
-            smoothWheel: true,
+                      // мобильные
+                      syncTouch: true,
+                      syncTouchLerp: 0.08,
+                      touchMultiplier: 1,
 
-            syncTouch: true,
+                      smoothWheel: false,
+                      anchors: true,
+                  }
+                : {
+                      autoRaf: false,
 
-            wheelMultiplier: 1,
+                      // десктоп
+                      duration: 1.2,
+                      smoothWheel: true,
+                      wheelMultiplier: 1,
 
-            touchMultiplier: 1,
-
-            anchors: true,
-        });
+                      anchors: true,
+                  }
+        );
 
         lenis.on("scroll", ScrollTrigger.update);
 
@@ -32,7 +45,6 @@ export default function LenisProvider({ children }) {
         };
 
         gsap.ticker.add(update);
-
         gsap.ticker.lagSmoothing(0);
 
         return () => {
