@@ -71,10 +71,9 @@ export default function Vision(){
             }
         })
 
-        const handleResize = () => ScrollTrigger.refresh();
-        window.addEventListener("resize", handleResize);
+        window.addEventListener("resize", ScrollTrigger.refresh);
         return () => {
-            window.removeEventListener("resize", handleResize);
+            window.removeEventListener("resize", ScrollTrigger.refresh);
         };
     }, {scope: section})
     

@@ -50,9 +50,6 @@ export default function Home() {
             }
         });
 
-    requestAnimationFrame(() => {
-        ScrollTrigger.refresh();
-    });
     }, { scope: page });
 
     return (
