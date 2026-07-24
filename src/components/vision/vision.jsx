@@ -44,17 +44,15 @@ export default function Vision(){
             onUpdate: (self) =>{
                 const scrollProgress = self.progress;
 
-                gsap.set(circleAnimation,{left:`${gsap.utils.interpolate(0, 100, scrollProgress)}%`})
+                gsap.to(circleAnimation,{left:`${gsap.utils.interpolate(0, 100, scrollProgress)}%`})
                 if (!isMobile) {
-                    gsap.set(dash,{clipPath: `polygon(0 0, ${scrollProgress*100}% 0, ${scrollProgress*100}% 100%, 0% 100%)`})
+                    gsap.to(dash,{clipPath: `polygon(0 0, ${scrollProgress*100}% 0, ${scrollProgress*100}% 100%, 0% 100%)`})
                 } else {
                     dashes.forEach((dash, i) => {
                         const progress = gsap.utils.clamp(0, 1, (scrollProgress - i * part) / part);
 
-                        gsap.set(dash, {clipPath: `polygon(0 0, ${progress * 100}% 0, ${progress * 100}% 100%, 0 100%)`});
-                        gsap.to(dots[i], {x: Math.max(0, dashesWidth * progress - 5),  duration: 0.15,
-    overwrite: true,
-    ease: "power2.out"});
+                        gsap.to(dash, {clipPath: `polygon(0 0, ${progress * 100}% 0, ${progress * 100}% 100%, 0 100%)`});
+                        gsap.to(dots[i], {x: Math.max(0, dashesWidth * progress - 5)});
 
                         const active = i === dashes.length - 1 ? progress > 0 : progress > 0 && progress < 1;
 
