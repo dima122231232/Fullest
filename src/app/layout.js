@@ -1,18 +1,16 @@
 import "./globals.css";
+import "lenis/dist/lenis.css";
 
-import ClientLayout from "@/client-layout";
-
-export const metadata = {
-  title: "Fullest",
-  description: "lalalala",
-};
+import LenisProvider from "@/components/LenisProvider";
 
 export default function RootLayout({ children }) {
-  return (
-    <html lang="en">
-      <body>
-        <ClientLayout>{children}</ClientLayout>
-      </body>
-    </html>
-  );
+    return (
+        <html lang="en">
+            <body>
+                <LenisProvider>
+                    {children}
+                </LenisProvider>
+            </body>
+        </html>
+    );
 }
