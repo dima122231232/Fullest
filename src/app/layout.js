@@ -1,16 +1,15 @@
-import "./globals.css";
 import "lenis/dist/lenis.css";
-
-import LenisProvider from "@/components/LenisProvider";
+import "./globals.css";
+import { LenisProvider } from "@/components/providers/lenis-provider";
 
 export default function RootLayout({ children }) {
     return (
-        <html lang="en">
-            <body>
-                <LenisProvider>
-                    {children}
-                </LenisProvider>
-            </body>
+        <html lang="ru">
+        <body>
+            <LenisProvider>
+            {children}
+            </LenisProvider>
+        </body>
         </html>
     );
 }
