@@ -110,6 +110,12 @@
     max-width: 855px;
 }
 @media (max-width:1200px) {
+    .vision{height:250vh;align-items:flex-start;}
+    .vision__container{
+        padding:2rem;
+        position: sticky;
+        top: 0;
+    }
     .vision__cards{
         display:grid;
         grid-template-columns:repeat(2, minmax(0, 1fr));
@@ -127,6 +133,6 @@
     
 }
 @media (max-width:800px) {
-    .vision__container{padding:0 1rem; gap:2rem;}
+    .vision__container{padding:2rem 1rem; gap:2rem;}
     .vision__images{gap:1rem;}
 }

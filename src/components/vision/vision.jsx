@@ -26,7 +26,7 @@ export default function Vision(){
             trigger:section.current,
             start:"top top",
             end:() => `+=${window.innerHeight * (isMobile ? 1.5 : 2)}px`,
-            pin:true,
+            pin:isMobile ? false : true,
             pinSpacing:true,
             scrub:.2,
             invalidateOnRefresh: true,
