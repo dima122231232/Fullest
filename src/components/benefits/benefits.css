@@ -59,8 +59,8 @@
 }
 @media (max-width:1000px) {
     .benefits{height:200svh;}
-    .benefits__visual{flex:0;}
-    .benefits__container{flex-direction: column;position: sticky; top:2rem;height: fit-content;}
+    .benefits__container{flex-direction: column;}
+    .benefits__container{flex-direction: column;position: sticky; top:2rem;height: fit-content;min-height: calc(100svh - 4rem);justify-content: space-between;}
     .benefits__content{flex:0;}
     .benefits__visual{scale:.8;}
 }
