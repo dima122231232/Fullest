@@ -52,6 +52,7 @@
 
     overflow: hidden;
     clip-path: inset(18px round 20px);
+    will-change: transform , left , top;
 }
 
 .hero__video{
@@ -71,7 +72,7 @@
     .hero__container{flex-direction: column;align-items: center;gap: 1rem;}
     .media{clip-path: inset(8px round 20px);}
     .hero__description{max-width:100%;}
-    .hero__media-wrapper{max-width:100%;transform: translateX(-18px);}
+    .hero__media-wrapper{max-width:100%;}
 }
 
 
@@ -123,3 +124,14 @@
     .process__cards{flex-direction: column;}
     .process__container{gap:4rem;}
 }
+
+            /* <video
+                    data-video
+                    className="hero__video"
+                    src="/home/video/video.mp4"
+                    muted
+                    autoPlay
+                    loop
+                    playsInline
+                    preload="auto"
+                /> */

@@ -24,7 +24,7 @@ export default function Vision(){
         const part = 1 / dashes.length;
 
         const anim = {
-            duration: .2,
+            duration: .12,
             ease: "none"
         };
         

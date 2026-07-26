@@ -25,28 +25,28 @@ export default function Home() {
         const video = q("[data-video]")[0];
         const poster = q("[data-poster]")[0];
 
-        video.addEventListener("loadedmetadata", () => {
-            video.currentTime = 0.03;
-        }, { once: true });
+        // video.addEventListener("loadedmetadata", () => {
+        //     video.currentTime = 0.03;
+        // }, { once: true });
 
-        video.addEventListener("canplay", () => {
-            gsap.delayedCall(0.5, () => {
-                poster.style.display = "none";
-                video.play().catch(console.error);
-            });
-        }, { once: true });
+        // video.addEventListener("canplay", () => {
+        //     gsap.delayedCall(0.5, () => {
+        //         poster.style.display = "none";
+        //         video.play().catch(console.error);
+        //     });
+        // }, { once: true });
 
         gsap.to(media, {
-            left: end.left - hero.left + 18,
+            left: end.left - hero.left,
             top: end.top - hero.top,
             width: end.width ,
             height: end.height,
             duration: 1.5,
+            delay:.5,
             ease: "power4.inOut",
             onComplete: () => {
                 target.appendChild(media);
                 gsap.set(media, { clearProps: "all" });
-                gsap.set(media, { x: 18 });
             }
         });
 
@@ -56,18 +56,9 @@ export default function Home() {
         <main ref={page}>
             <section className="hero" data-hero>
                 <div className="media" data-media>
-                    <video
-                        data-video
-                        className="hero__video"
-                        src="/home/video/"
-                        muted
-                        loop
-                        playsInline
-                        preload="auto"
-                    />
                     <img
                         data-poster
-                        src="/home/images/preloader.png"
+                        src="/home/images/preloader.jpg"
                         className="hero__poster"
                     />
                 </div>

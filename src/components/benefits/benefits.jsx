@@ -8,9 +8,45 @@ gsap.registerPlugin(ScrollTrigger);
 
 export default function Benefits(){
     const section = useRef(null);
-
     useGSAP(() =>{
+        const isMobile = window.innerWidth < 1000;
+        const q = gsap.utils.selector(section);
+        const one = q(".one");
+        const three = q(".three");
+        const backOne = q(".back-circles.one");
+        const backThree = q(".back-circles.three");
+        const pill = q(".benefits__pill-img")[0];
+        const pills = Array.from({ length: 9 }, (_, i) => `/pills/pill-${i + 1}.png`);
 
+        gsap.set(backOne, { yPercent: 100 });
+        gsap.set(backThree, { yPercent: -100 });
+
+        
+        ScrollTrigger.create({
+            trigger:section.current,
+            start:"top top",
+            end:()=> `+=${window.innerHeight}px`,
+            pin: isMobile ? false : true,
+            pinSpacing:true,
+            scrub:1,
+            invalidateOnRefresh: true,
+            onUpdate:(self) =>{
+                const scrollProgress = self.progress;
+                const animProgress = gsap.utils.interpolate(0, isMobile ? -100 : -200, self.progress);
+
+                gsap.set(one, { y: animProgress });
+                gsap.set(three, { y: -animProgress });
+
+                gsap.set(backOne, { yPercent: 100, y: animProgress });
+                gsap.set(backThree, { yPercent: -100, y: -animProgress });           
+                
+                const imageIndex = Math.round(
+                    gsap.utils.interpolate(1, 9, self.progress)
+                );
+
+                pill.src = `/pills/pill-${imageIndex}.png`;
+            }
+        })
     }, {scope: section})
     
     return(
@@ -22,28 +58,18 @@ export default function Benefits(){
                 </div>
                 <div className="benefits__visual">
                     <div className="benefits__visual-block">
-                        <img src="/pills/pill-9.png" alt="pill" className="benefits__pill-img"/>
-                        <div className="benefits__item" >
-                            <div className="benefits__circle-block">
-                                <div className="benefits__circle benefits__circle--top"></div>
-                                <div className="benefits__circle benefits__circle--bottom"></div>
-                            </div>
-                            <span className="mono">Environment</span>
-                        </div>
-                        <div className="benefits__item" >
-                            <div className="benefits__circle-block">
-                                <div className="benefits__circle benefits__circle--top"></div>
-                                <div className="benefits__circle benefits__circle--bottom"></div>
-                            </div>
-                            <span className="mono">ROUTINES</span>
-                        </div>
-                        <div className="benefits__item" >
-                            <div className="benefits__circle-block">
-                                <div className="benefits__circle benefits__circle--top"></div>
-                                <div className="benefits__circle benefits__circle--bottom"></div>
-                            </div>
-                            <span className="mono">FORMULA</span>
-                        </div>
+                        <div className="back-circles one"></div>
+                        <div className="back-circles two"></div>
+                        <div className="back-circles three"></div>
+                            <img src="/pills/pill-9.png" alt="pill" className="benefits__pill-img"/>
+                        <div className="front-circles one"></div>
+                        <div className="front-circles two"></div>
+                        <div className="front-circles three"></div>
+                    </div>
+                    <div className="benefits-mono">
+                        <span className="mono one">FORMULA</span>
+                        <span className="mono two">Environment</span>
+                        <span className="mono three">ROUTINES</span>
                     </div>
                 </div>
             </div>
