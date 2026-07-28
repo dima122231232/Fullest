@@ -65,12 +65,6 @@
     left:0%;
     will-change: transform;
 }
-.vision__timeline-desk .dash{
-    border-top: 1px dashed #000;
-    flex: 1;
-    clip-path: polygon(0 0, 0 0, 0 100%, 0% 100%);
-    will-change: clip-path;
-}
 
 .vision__divider {
     grid-column: 1 / -1;
@@ -81,11 +75,18 @@
     align-items: center;    
     position: relative;
 }
-.vision__divider .dash{
-    clip-path: polygon(0 0, 0 0, 0 100%, 0% 100%);
+.vision .dash-block{
+    flex: 1;
+    transform-origin: 0% 0%;
+    position: relative;
+    overflow: hidden;
+    height:1px;
+}
+.vision .dash{
+    position: absolute;
     border-top: 1px dashed #000;
+    flex: 1;
     width: 100%;
-    will-change: clip-path;
 }
 .divider-circle{
     height:10px;
