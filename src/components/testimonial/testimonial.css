@@ -106,7 +106,7 @@
     .testimonial__track::before,
     .testimonial__track::after{
         content:"";
-        flex:0 0 10%;
+        flex:0 0 0%;
     }
     .testimonial__container{gap:2rem;}
     .testimonial__quote{padding:0 1rem;text-align: start;}
