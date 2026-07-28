@@ -26,7 +26,7 @@ export default function Benefits(){
         ScrollTrigger.create({
             trigger:section.current,
             start:"top top",
-            end:()=> `+=${window.innerHeight}px`,
+            end: () => `+=${window.innerHeight * (isMobile ? .6 : 1)}`,
             pin: isMobile ? false : true,
             pinSpacing:true,
             scrub:1,

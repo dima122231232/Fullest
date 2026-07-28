@@ -33,7 +33,7 @@ export default function Vision(){
         ScrollTrigger.create({
             trigger:section.current,
             start:"top top",
-            end:() => `+=${window.innerHeight * (isMobile ? 1.5 : 2)}px`,
+            end:() => `+=${window.innerHeight * (isMobile ? .8 : 2)}px`,
             pin:isMobile ? false : true,
             pinSpacing:true,
             scrub:1,
@@ -70,39 +70,39 @@ export default function Vision(){
                     
                 }
 
-card.forEach((item, index) => {
-    const trigger = index * segment + segment * (isMobile ? 0.15 : 0.5);
+                card.forEach((item, index) => {
+                    const trigger = index * segment + segment * (isMobile ? 0.15 : 0.5);
 
-    if (scrollProgress >= trigger && !shown[index]) {
-        shown[index] = true;
+                    if (scrollProgress >= trigger && !shown[index]) {
+                        shown[index] = true;
 
-        gsap.fromTo(item,
-            {
-                opacity: 0,
-                scale: 0.9,
-            },
-            {
-                opacity: 1,
-                scale: 1,
-                duration: .3,
-                ease: "power2.out",
-                overwrite: true
-            }
-        );
-    }
+                        gsap.fromTo(item,
+                            {
+                                opacity: 0,
+                                scale:isMobile ? 1 : .9,
+                            },
+                            {
+                                opacity: 1,
+                                scale: 1,
+                                duration: .3,
+                                ease: "power2.out",
+                                overwrite: true
+                            }
+                        );
+                    }
 
-    if (scrollProgress < trigger && shown[index]) {
-        shown[index] = false;
+                    if (scrollProgress < trigger && shown[index]) {
+                        shown[index] = false;
 
-        gsap.to(item, {
-            opacity: 0,
-            scale: 0.9,
-            duration: .2,
-            ease: "power3.out",
-            overwrite: true
-        });
-    }
-});
+                        gsap.to(item, {
+                            opacity: 0,
+                            scale:isMobile ? 1 : .9,
+                            duration: .2,
+                            ease: "power3.out",
+                            overwrite: true
+                        });
+                    }
+                });
                 
             }
         })
