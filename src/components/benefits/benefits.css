@@ -33,7 +33,6 @@
     align-items: center;
     justify-content: center;
     gap:2.2rem;
-    contain:layout paint;
 }
 .benefits__visual-block{
     display: flex;
