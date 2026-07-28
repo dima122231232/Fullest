@@ -23,7 +23,8 @@ export default function Vision(){
         const dashes = q(".vision__divider .dash");
         const dashesWidth = dashes[0].offsetWidth
         const part = 1 / dashes.length;
-
+        const shown = card.map(() => false); 
+        
         const anim = {
             duration: .12,
             ease: "none"
@@ -69,10 +70,39 @@ export default function Vision(){
                     
                 }
 
-                card.forEach((item, index) => {
-                    const localProgress = gsap.utils.clamp(0 , 1, (scrollProgress - (index * segment + segment * (isMobile ? 0.15 : 0.5))) / (segment * (isMobile ? 0.35 : 0.5)));
-                    gsap.set(item,{opacity:localProgress})
-                })
+card.forEach((item, index) => {
+    const trigger = index * segment + segment * (isMobile ? 0.15 : 0.5);
+
+    if (scrollProgress >= trigger && !shown[index]) {
+        shown[index] = true;
+
+        gsap.fromTo(item,
+            {
+                opacity: 0,
+                scale: 0.8,
+            },
+            {
+                opacity: 1,
+                scale: 1,
+                duration: .2,
+                ease: "power2.inOut",
+                overwrite: true
+            }
+        );
+    }
+
+    if (scrollProgress < trigger && shown[index]) {
+        shown[index] = false;
+
+        gsap.to(item, {
+            opacity: 0,
+            scale: 0.95,
+            duration: .2,
+            ease: "power3.out",
+            overwrite: true
+        });
+    }
+});
                 
             }
         })

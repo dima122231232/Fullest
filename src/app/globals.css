@@ -81,6 +81,7 @@ button{
     letter-spacing: -1%;
     font-size: .875rem;
     cursor: pointer;
+    color: var(--link-color);
 }
 
 p{
