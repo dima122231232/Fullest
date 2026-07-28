@@ -11,8 +11,8 @@ export default function RootLayout({ children }) {
                 <Header/>
                 <LenisProvider>
                 {children}
-                </LenisProvider>
                 <Footer/>
+                </LenisProvider>
             </body>
         </html>
     );
