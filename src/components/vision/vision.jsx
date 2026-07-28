@@ -15,12 +15,12 @@ export default function Vision(){
         const isMobile = window.innerWidth < 1200;
         const card = q(".vision__card");
         const segment = 1 / card.length;
-        const dash = q(".vision__timeline-desk .dash-block")[0];
+        const dash = q(".vision__timeline-desk .dash")[0];
         const circles = q(".circle");
         const circle = q(".divider-circle");
         const dots = q(".divider-circle--animation");
         const circleAnimation = q(".circle-animation")[0];
-        const dashes = q(".vision__divider .dash-block");
+        const dashes = q(".vision__divider .dash");
         const dashesWidth = dashes[0].offsetWidth
         const part = 1 / dashes.length;
         const shown = card.map(() => false); 
@@ -36,7 +36,7 @@ export default function Vision(){
             end:() => `+=${window.innerHeight * (isMobile ? .8 : 2)}px`,
             pin:isMobile ? false : true,
             pinSpacing:true,
-            scrub:1,
+            scrub:true,
             invalidateOnRefresh: true,
             onToggle: (self) => {
                 if (self.isActive) {
@@ -51,12 +51,12 @@ export default function Vision(){
                 const scrollProgress = self.progress;
                 if (!isMobile) {
                     gsap.to(circleAnimation,{left:`${gsap.utils.interpolate(0, 100, scrollProgress)}%`, ...anim})
-                    gsap.to(dash,{scaleX: scrollProgress, ...anim})
+                    gsap.to(dash,{clipPath: `polygon(0 0, ${scrollProgress*100}% 0, ${scrollProgress*100}% 100%, 0% 100%)`, ...anim})
                 } else {
                     dashes.forEach((dash, i) => {
                         const progress = gsap.utils.clamp(0, 1, (scrollProgress - i * part) / part);
 
-                        gsap.to(dash, {scaleX: progress, ...anim});
+                        gsap.to(dash, {clipPath: `polygon(0 0, ${progress * 100}% 0, ${progress * 100}% 100%, 0 100%)`, ...anim});
                         gsap.to(dots[i], {x: Math.max(0, dashesWidth * progress - 5), ...anim});
 
                         const active = i === dashes.length - 1 ? progress > 0 : progress > 0 && progress < 1;
@@ -138,7 +138,7 @@ export default function Vision(){
 
                         <div className="vision__divider">
                             <div className="divider-circle" style={{scale:0}}></div><div className="divider-circle divider-circle--animation"></div>
-                            <div className="dash-block"><div className="dash"></div></div>
+                            <div className="dash"></div>
                         </div>
 
                         <div className="vision__card">
@@ -159,7 +159,7 @@ export default function Vision(){
 
                         <div className="vision__divider">
                             <div className="divider-circle divider-circle--animation"></div>
-                            <div className="dash-block"><div className="dash"></div></div>   
+                            <div className="dash"></div>    
                         </div>
 
                         <div className="vision__card">
@@ -171,14 +171,14 @@ export default function Vision(){
 
                         <div className="vision__divider">
                             <div className="divider-circle divider-circle--animation"></div>
-                            <div className="dash-block"><div className="dash"></div></div>   
+                            <div className="dash"></div>    
                         </div>
 
                     </div>
 
                     <div className="vision__timeline-desk">
                         <div className="circle"></div>
-                        <div className="dash-block"><div className="dash"></div></div>
+                        <div className="dash"></div>
                         <div className="circle circle-animation"></div>
                     </div>
 

@@ -29,7 +29,7 @@ export default function Benefits(){
             end: () => `+=${window.innerHeight * (isMobile ? .6 : 1)}`,
             pin: isMobile ? false : true,
             pinSpacing:true,
-            scrub:1,
+            scrub:true,
             invalidateOnRefresh: true,
             onUpdate:(self) =>{
                 const scrollProgress = self.progress;

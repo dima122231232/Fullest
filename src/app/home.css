@@ -10,6 +10,7 @@
         #FDFFCC 0%,
         var(--base-200) 100%
     );
+    contain:layout paint;
 }
 .hero__container {
     display:flex;
