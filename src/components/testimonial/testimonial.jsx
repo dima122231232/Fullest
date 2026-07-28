@@ -13,6 +13,7 @@ export default function Testimonial() {
     const videos = useRef(null);
 
 useGSAP(() => {
+    const isMobile = window.innerWidth < 800;
     const q = gsap.utils.selector(section);
 
     const container = q(".testimonial__videos")[0];
@@ -43,7 +44,9 @@ useGSAP(() => {
 
     create();
 
-    window.addEventListener("resize", create);
+    if(!isMobile){
+        window.addEventListener("resize", create);
+    }
 
     return () => {
         window.removeEventListener("resize", create);
