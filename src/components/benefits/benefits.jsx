@@ -3,6 +3,7 @@ import { useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
+import Copy from "@/components/copy/copy";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -40,11 +41,10 @@ export default function Benefits(){
                 gsap.set(backOne, { yPercent: 100, y: animProgress });
                 gsap.set(backThree, { yPercent: -100, y: -animProgress });           
                 
-                const imageIndex = Math.round(
-                    gsap.utils.interpolate(1, 9, self.progress)
-                );
-
-                pill.src = `/pills/pill-${imageIndex}.png`;
+                if (!isMobile){
+                    const imageIndex = Math.round(gsap.utils.interpolate(1, 9, self.progress));
+                    pill.src = `/pills/pill-${imageIndex}.png`;
+                }
             }
         })
     }, {scope: section})
@@ -54,7 +54,9 @@ export default function Benefits(){
             <div className="container benefits__container">
                 <div className="benefits__content">
                     <span className="mono">It's not just what you take.</span>
-                    <p>Your supplements work best when they're supported by the right routines and environment. Fullest helps you understand the small changes that can make the biggest difference.</p>
+                    <Copy>
+                        <p>Your supplements work best when they're supported by the right routines and environment. Fullest helps you understand the small changes that can make the biggest difference.</p>
+                    </Copy>
                 </div>
                 <div className="benefits__visual">
                     <div className="benefits__visual-block">

@@ -3,6 +3,7 @@ import { useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
+import Copy from "@/components/copy/copy";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -154,13 +155,17 @@ export default function Vision(){
 
                 </div>
 
-                <p className="vision-title">Because what works for one body may not work for yours.</p>
+                <Copy>
+                    <p className="vision-title">Because what works for one body may not work for yours.</p>
+                </Copy>
             </div>
         </section>
         <div >
             <div className="container vision-block--container">
                 <span className="mono">Our Vision</span>
-                <h2>Finding what works for your body shouldn't take endless trial and error.</h2>
+                <Copy>
+                    <h2>Finding what works for your body shouldn't take endless trial and error.</h2>
+                </Copy>
             </div>
         </div>
         </>

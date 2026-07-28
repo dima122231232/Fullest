@@ -4,6 +4,7 @@ import "./home.css";
 import { useRef } from "react";
 import { gsap } from "gsap";
 import { useGSAP } from "@gsap/react";
+import Copy from "@/components/copy/copy";
 import Vision from "@/components/vision/vision";
 import Benefits from "@/components/benefits/benefits";
 import Testimonial from "@/components/testimonial/testimonial";
@@ -64,14 +65,24 @@ export default function Home() {
                 </div>
                 <div className="container hero__container">
 
-                    <div className="hero__content">
-                        <h1>Your co-pilot for everyday wellbeing.</h1>
+                    
+                        <div className="hero__content">
+                            <Copy 
+                            animateOnScroll={false} 
+                            delay={1}
+                            ><h1>Your co-pilot for everyday wellbeing.</h1></Copy>
 
-                        <p className="hero__description">
-                            Fullest combines personalized supplements, daily routines,
-                            and environmental guidance into one formula that evolves with you.
-                        </p>
-                    </div>
+                            <Copy 
+                            animateOnScroll={false} 
+                            delay={1}
+                            type="words"
+                            stagger={0.035}
+
+                            ><p className="hero__description">
+                                Fullest combines personalized supplements, daily routines,
+                                and environmental guidance into one formula that evolves with you.
+                            </p></Copy>
+                        </div>
                     <div className="hero__media-wrapper" data-target />
                 </div>
             </section>

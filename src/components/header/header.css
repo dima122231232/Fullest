@@ -1,0 +1,15 @@
+header{
+    position: fixed;
+    top:0;
+    z-index: 100;
+    padding:1.625rem var(--indents);
+    width:100%;
+    display: flex;
+    justify-content: space-between;
+}
+header button{
+    background-color: var(--base-300);
+    border:transparent;
+    padding:.75rem;
+    border-radius:.75rem;
+}

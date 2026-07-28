@@ -14,6 +14,8 @@
     
 
     --block-hover-transion: .6s cubic-bezier(0.5, 0, 0.2, 1);
+
+    --indents:2rem;
 }
 
 html {overscroll-behavior: none;}
@@ -42,7 +44,7 @@ img{
   max-width: 2000px;
   height: 100%;
   margin: 0 auto;
-  padding:0 2rem;
+  padding:0 var(--indents);
 }
 
 .font-primary{font-family: var(--font-primary);}
@@ -54,7 +56,7 @@ h5,
 h6{
     font-size: clamp(2.5rem, 6vw, 5rem);
     font-weight:350;
-    line-height:96%;
+    line-height:100%;
     letter-spacing:-2%;
 }
 h4{
@@ -64,6 +66,21 @@ h4{
     letter-spacing:0%;  
 }
 
+a{
+    font-size: .875rem;
+    font-weight: 250;
+    line-height:110%;
+    letter-spacing:-1%;
+    text-decoration: none;
+    color: unset;
+}
+button{
+    font-weight: 350;
+    line-height:110%;
+    letter-spacing: -1%;
+    font-size: .875rem;
+    cursor: pointer;
+}
 
 p{
     font-size:clamp(1.5rem, 3vw, 2.5rem);
@@ -103,5 +120,7 @@ p.xs{
 
 
 @media (max-width:800px) {
-    .container {padding:0 1rem;}
+    :root{
+        --indents:1rem;
+    }
 }
