@@ -1,4 +1,14 @@
 .benefits .mono{background-color:var(--base-200);}
+.front-circles.one,
+.front-circles.three,
+.back-circles.one,
+.back-circles.three {
+    will-change: transform;
+}
+
+.benefits__pill-img {
+    will-change: transform;
+}
 .benefits{
     height: 100svh;
     padding:2rem 0;

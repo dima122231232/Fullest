@@ -79,13 +79,13 @@ card.forEach((item, index) => {
         gsap.fromTo(item,
             {
                 opacity: 0,
-                scale: 0.8,
+                scale: 0.9,
             },
             {
                 opacity: 1,
                 scale: 1,
-                duration: .2,
-                ease: "power2.inOut",
+                duration: .3,
+                ease: "power2.out",
                 overwrite: true
             }
         );
@@ -96,7 +96,7 @@ card.forEach((item, index) => {
 
         gsap.to(item, {
             opacity: 0,
-            scale: 0.95,
+            scale: 0.9,
             duration: .2,
             ease: "power3.out",
             overwrite: true

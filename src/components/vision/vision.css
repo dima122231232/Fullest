@@ -28,6 +28,7 @@
     flex-direction: column;
     gap:1.625rem;
     opacity:0;
+    will-change: transform, opacity;
 }
 .vision__images{
     display: flex;
@@ -62,6 +63,7 @@
 .vision__timeline-desk .circle-animation{
     position: absolute;
     left:0%;
+    will-change: transform;
 }
 .vision__timeline-desk .dash{
     border-top: 1px dashed #000;
@@ -83,6 +85,7 @@
     clip-path: polygon(0 0, 0 0, 0 100%, 0% 100%);
     border-top: 1px dashed #000;
     width: 100%;
+    will-change: clip-path;
 }
 .divider-circle{
     height:10px;
@@ -95,6 +98,7 @@
 }
 .divider-circle--animation{
     scale:0;
+    will-change: transform;
 }
 
 .vision-block--container{

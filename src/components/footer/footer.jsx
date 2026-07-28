@@ -9,7 +9,7 @@ export default function Footer(){
     const footer = useRef(null);
 
     useGSAP(() =>{
-        const isMobile = window.innerWidth < 1000;
+        const isMobile = window.innerWidth < 800;
         const q = gsap.utils.selector(footer);
         const anim = q(".footer-anim");
         if(!isMobile){
