@@ -69,7 +69,7 @@
     transform: translateX(5px);
 }
 @media (max-width:1000px) {
-    .benefits{height:220svh;}
+    .benefits{height:270svh;}
     .benefits__container{flex-direction: column;}
     .benefits__container{flex-direction: column;position: sticky; top:2rem;height: fit-content;min-height: calc(100svh - 4rem);justify-content: space-between;}
     .benefits__content{flex:0;}
