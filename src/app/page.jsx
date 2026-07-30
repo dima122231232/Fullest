@@ -45,7 +45,7 @@ export default function Home() {
             height: end.height,
             duration: 1.5,
             delay:.5,
-            y:isMobile ? 4 : 0,
+            y:isMobile ? 200 : 0,
             ease: "power4.inOut",
             onComplete: () => {
                 target.appendChild(media);
