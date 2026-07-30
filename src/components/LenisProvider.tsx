@@ -3,7 +3,6 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import Lenis from "lenis";
 import type { LenisOptions } from "lenis";
-
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
@@ -25,23 +24,19 @@ export default function LenisProvider({
       autoRaf: false,
 
       duration: 1.2,
-
-      easing: (t) =>
-        Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
 
       smoothWheel: true,
 
-      syncTouch: false,
-
-      touchMultiplier: 1.2,
+      smoothTouch: true,
+      syncTouch: true,
+      touchMultiplier: 1.5,
 
       wheelMultiplier: 1,
-
       anchors: true,
     };
 
     const instance = new Lenis(options);
-
     setLenis(instance);
 
     instance.on("scroll", ScrollTrigger.update);
@@ -51,14 +46,11 @@ export default function LenisProvider({
     };
 
     gsap.ticker.add(update);
-
     gsap.ticker.lagSmoothing(0);
 
     return () => {
       gsap.ticker.remove(update);
-
       instance.off("scroll", ScrollTrigger.update);
-
       instance.destroy();
     };
   }, []);
