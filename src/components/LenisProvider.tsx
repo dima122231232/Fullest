@@ -28,15 +28,13 @@ export default function LenisProvider({
     const options: LenisOptions = {
       autoRaf: false,
 
-      // 🖥️ ДЕСКТОП — возвращаем твои старые настройки
-      duration: isTouch ? 1 : 1.2,
+      duration: isTouch ? 1.4 : 1.2,
       easing: isTouch
-        ? (t) => 1 - Math.pow(1 - t, 3) // мобилка
-        : (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), // твой старый easing
+        ? (t) => 1 - Math.pow(1 - t, 4) 
+        : (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
 
       smoothWheel: true,
 
-      // 📱 МОБИЛКА — оставляем идеальную схему
       smoothTouch: isIOS ? false : true,
       syncTouch: isIOS ? false : true,
       touchMultiplier: isAndroid ? 1.2 : 1,
