@@ -26,10 +26,10 @@ export default function Benefits(){
         ScrollTrigger.create({
             trigger:section.current,
             start:"top top",
-            end: () => `+=${window.innerHeight * (isMobile ? .6 : 1)}`,
+            end: () => `+=${window.innerHeight * (isMobile ? 2 : 1)}`,
             pin: isMobile ? false : true,
             pinSpacing:true,
-            scrub:true,
+            scrub:1,
             invalidateOnRefresh: true,
             onUpdate:(self) =>{
                 const scrollProgress = self.progress;
