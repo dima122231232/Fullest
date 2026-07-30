@@ -33,12 +33,12 @@ body {
     color: var(--content-100);
     height:200svh;
 }
+main{z-index: 2;}
 img{
   width: 100%;
   height: 100%;
   object-fit: cover;
 }
-
 .container {
   position: relative;
   width: 100%;

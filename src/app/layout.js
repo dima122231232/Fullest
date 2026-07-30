@@ -8,11 +8,13 @@ export default function RootLayout({ children }) {
     return (
         <html lang="ru">
             <body>
-                <Header/>
-                <LenisProvider>
-                {children}
-                <Footer/>
-                </LenisProvider>
+                <div className="wrapper">
+                    <Header/>
+                    <LenisProvider>
+                        {children}
+                    <Footer/>
+                    </LenisProvider>
+                </div>
             </body>
         </html>
     );
