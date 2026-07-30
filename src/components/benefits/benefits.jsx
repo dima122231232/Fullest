@@ -38,8 +38,8 @@ export default function Benefits(){
                 gsap.set(one, { y: animProgress });
                 gsap.set(three, { y: -animProgress });
 
-                gsap.set(backOne, { yPercent: 100, y: animProgress });
-                gsap.set(backThree, { yPercent: -100, y: -animProgress });           
+                gsap.to(backOne, { yPercent: 100, y: animProgress });
+                gsap.to(backThree, { yPercent: -100, y: -animProgress });           
                 
                 if (!isMobile){
                     const imageIndex = Math.round(gsap.utils.interpolate(1, 9, self.progress));
