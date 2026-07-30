@@ -16,6 +16,7 @@ export default function Home() {
     
 
     useGSAP(() => {
+        const isMobile = window.innerWidth < 800;
         const q = gsap.utils.selector(page);
 
         const hero = q("[data-hero]")[0].getBoundingClientRect();
@@ -44,6 +45,7 @@ export default function Home() {
             height: end.height,
             duration: 1.5,
             delay:.5,
+            y:isMobile ? 4 : 0,
             ease: "power4.inOut",
             onComplete: () => {
                 target.appendChild(media);
