@@ -33,7 +33,7 @@ export default function Vision(){
         ScrollTrigger.create({
             trigger:section.current,
             start:"top top",
-            end:() => `+=${window.innerHeight * (isMobile ? .8 : 2)}px`,
+            end:() => `+=${window.innerHeight * (isMobile ? 2 : 2)}px`,
             pin:isMobile ? false : true,
             pinSpacing:true,
             scrub:true,
