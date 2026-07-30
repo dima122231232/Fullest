@@ -33,7 +33,7 @@ export default function Benefits(){
             invalidateOnRefresh: true,
             onUpdate:(self) =>{
                 const scrollProgress = self.progress;
-                const animProgress = gsap.utils.interpolate(0, isMobile ? -100 : -200, self.progress);
+                const animProgress = gsap.utils.interpolate(0, isMobile ? -80 : -140, self.progress);
 
                 gsap.set(one, { y: animProgress });
                 gsap.set(three, { y: -animProgress });

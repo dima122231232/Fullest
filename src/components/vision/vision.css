@@ -6,6 +6,7 @@
     align-items: center;
     content-visibility: auto;
     contain-intrinsic-size: 1000px;
+    background-color: var(--base-200);
 }
 .vision__container{
     width:100%;
@@ -110,6 +111,7 @@
     gap:1rem;
     align-items: center;
     justify-content: center;
+    background-color: var(--base-200);
 }
 .vision-block--container h2{
     text-align: center;

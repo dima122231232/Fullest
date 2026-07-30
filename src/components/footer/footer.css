@@ -1,9 +1,11 @@
 .footer {
     background-color: var(--base-200);
     overflow: hidden;
+    position:sticky;
+    bottom:0;
+    z-index: -1;
 }
 .footer-anim{
-    transform: translateY(calc(-100%));
     padding:2.625rem 0 1.625rem;
     will-change: transform;
 }

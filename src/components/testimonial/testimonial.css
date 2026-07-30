@@ -9,6 +9,7 @@
     padding-bottom:8rem;
     content-visibility: auto;
     contain-intrinsic-size: 1000px;
+    position:relative;
 }
 .testimonial__container{
     display: flex;

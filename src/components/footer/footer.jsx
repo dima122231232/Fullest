@@ -10,11 +10,7 @@ export default function Footer(){
 
     useGSAP(() =>{
         const isMobile = window.innerWidth < 800;
-        const q = gsap.utils.selector(footer);
-        const anim = q(".footer-anim");
-        if(!isMobile){
-            gsap.to(anim,{y:0, ease: "none",scrollTrigger:{trigger:footer.current, start:"5% bottom" ,end:"105% bottom" , scrub:0}})
-        }
+
     }, {scope: footer})
     return(
         <footer ref={footer} className="footer">

@@ -103,7 +103,6 @@ export default function Vision(){
                         });
                     }
                 });
-                
             }
         })
 
@@ -185,7 +184,10 @@ export default function Vision(){
 
                 </div>
 
-                <Copy>
+                <Copy
+                    trigger=".vision-block--container"
+                    start="0% bottom"
+                >
                     <p className="vision-title">Because what works for one body may not work for yours.</p>
                 </Copy>
             </div>
