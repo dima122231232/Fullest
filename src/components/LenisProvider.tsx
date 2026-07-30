@@ -28,38 +28,35 @@ export default function LenisProvider({
     const options: LenisOptions = {
       autoRaf: false,
 
-      // 🎯 Десктоп — кинематографичный smooth
+      // 🖥️ ДЕСКТОП — возвращаем твои старые настройки
       duration: isTouch ? 1 : 1.2,
-      easing: (t) => 1 - Math.pow(1 - t, 3),
+      easing: isTouch
+        ? (t) => 1 - Math.pow(1 - t, 3) // мобилка
+        : (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), // твой старый easing
 
       smoothWheel: true,
 
-      // 📱 Touch логика
+      // 📱 МОБИЛКА — оставляем идеальную схему
       smoothTouch: isIOS ? false : true,
       syncTouch: isIOS ? false : true,
-
-      // Android можно чуть усилить
       touchMultiplier: isAndroid ? 1.2 : 1,
 
       wheelMultiplier: 1,
-
-      // 🔗 якоря
       anchors: true,
     };
 
     const instance = new Lenis(options);
     setLenis(instance);
 
-    // 🔥 GSAP sync
     instance.on("scroll", ScrollTrigger.update);
 
-    gsap.ticker.add((time) => {
+    const update = (time: number) => {
       instance.raf(time * 1000);
-    });
+    };
 
+    gsap.ticker.add(update);
     gsap.ticker.lagSmoothing(0);
 
-    // 💡 фикс для ScrollTrigger
     ScrollTrigger.scrollerProxy(document.body, {
       scrollTop(value) {
         if (arguments.length) {
@@ -80,9 +77,7 @@ export default function LenisProvider({
     ScrollTrigger.refresh();
 
     return () => {
-      gsap.ticker.remove((time) => {
-        instance.raf(time * 1000);
-      });
+      gsap.ticker.remove(update);
       instance.destroy();
     };
   }, []);
