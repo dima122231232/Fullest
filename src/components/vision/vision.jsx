@@ -10,8 +10,8 @@ gsap.registerPlugin(ScrollTrigger);
 export default function Vision(){
     const section = useRef(null);
 
-    useGSAP(() =>{
-        const q = gsap.utils.selector(section);
+    useGSAP((context) =>{
+        const q = context.selector;
         const isMobile = window.innerWidth < 1200;
         const card = q(".vision__card");
         const segment = 1 / card.length;
@@ -21,7 +21,6 @@ export default function Vision(){
         const dots = q(".divider-circle--animation");
         const circleAnimation = q(".circle-animation")[0];
         const dashes = q(".vision__divider .dash");
-        const dashesWidth = dashes[0].offsetWidth
         const part = 1 / dashes.length;
         const shown = card.map(() => false); 
         
@@ -29,6 +28,7 @@ export default function Vision(){
             duration: .12,
             ease: "none"
         };
+        let dashesWidth;
         
         ScrollTrigger.create({
             trigger:section.current,
@@ -46,6 +46,9 @@ export default function Vision(){
                     gsap.to(circles, { scale: 0, duration: .2 });
                     gsap.to(circle[0], { scale: 0, duration: .2 });
                 }
+            },
+            onRefresh: () => {
+                dashesWidth = dashes[0].offsetWidth;
             },
             onUpdate: (self) =>{
                 const scrollProgress = self.progress;
