@@ -1,22 +1,21 @@
 "use client";
 
 import "./home.css";
-import { useRef } from "react";
+import { useRef , useLayoutEffect } from "react";
 import { gsap } from "gsap";
 import { Flip } from "gsap/Flip";
-import { useGSAP } from "@gsap/react";
 import Copy from "@/components/copy/copy";
 import Vision from "@/components/vision/vision";
 import Benefits from "@/components/benefits/benefits";
 import Testimonial from "@/components/testimonial/testimonial";
 
-gsap.registerPlugin(useGSAP, Flip);
+gsap.registerPlugin(Flip);
 
 export default function Home() {
     const page = useRef(null);
     
 
-useGSAP(() => {
+useLayoutEffect(() => {
     const isMobile = window.innerWidth < 800;
 
     const q = gsap.utils.selector(page);

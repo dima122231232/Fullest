@@ -71,8 +71,9 @@
 .vision__timeline-desk .dash{
     border-top: 1px dashed #000;
     flex: 1;
-    clip-path: polygon(0 0, 0 0, 0 100%, 0% 100%);
+    clip-path: inset(0 100% 0 0);
     will-change: clip-path;
+    
 }
 
 .vision__divider {
@@ -85,7 +86,7 @@
     position: relative;
 }
 .vision__divider .dash{
-    clip-path: polygon(0 0, 0 0, 0 100%, 0% 100%);
+    clip-path: inset(0 100% 0 0);
     border-top: 1px dashed #000;
     width: 100%;
     will-change: clip-path;
@@ -103,15 +104,17 @@
     scale:0;
     will-change: transform;
 }
-
-.vision-block--container{
+.vision--block{
     height:100svh;
+    background-color: var(--base-200);
+    transform: translateY(-1px);
+}
+.vision-block--container{
     display: flex;
     flex-direction: column;
     gap:1rem;
     align-items: center;
     justify-content: center;
-    background-color: var(--base-200);
 }
 .vision-block--container h2{
     text-align: center;

@@ -50,14 +50,14 @@ export default function Vision(){
             onUpdate: (self) =>{
                 const scrollProgress = self.progress;
                 if (!isMobile) {
-                    gsap.to(circleAnimation,{left:`${gsap.utils.interpolate(0, 100, scrollProgress)}%`, ...anim})
-                    gsap.to(dash,{clipPath: `polygon(0 0, ${scrollProgress*100}% 0, ${scrollProgress*100}% 100%, 0% 100%)`, ...anim})
+                    gsap.set(circleAnimation,{left:`${gsap.utils.interpolate(0, 100, scrollProgress)}%`, ...anim})
+                    gsap.set(dash,{clipPath: `inset(0 ${100 - scrollProgress * 100}% 0 0)`, ...anim})
                 } else {
                     dashes.forEach((dash, i) => {
                         const progress = gsap.utils.clamp(0, 1, (scrollProgress - i * part) / part);
 
-                        gsap.to(dash, {clipPath: `polygon(0 0, ${progress * 100}% 0, ${progress * 100}% 100%, 0 100%)`, ...anim});
-                        gsap.to(dots[i], {x: Math.max(0, dashesWidth * progress - 5), ...anim});
+                        gsap.set(dash, {clipPath: `inset(0 ${100 - progress * 100}% 0 0)`, ...anim});
+                        gsap.set(dots[i], {x: Math.max(0, dashesWidth * progress - 5), ...anim});
 
                         const active = i === dashes.length - 1 ? progress > 0 : progress > 0 && progress < 1;
 
@@ -185,14 +185,14 @@ export default function Vision(){
                 </div>
 
                 <Copy
-                    trigger=".vision-block--container"
+                    trigger=".vision--block"
                     start="0% bottom"
                 >
                     <p className="vision-title">Because what works for one body may not work for yours.</p>
                 </Copy>
             </div>
         </section>
-        <div >
+        <div className="vision--block">
             <div className="container vision-block--container">
                 <span className="mono">Our Vision</span>
                 <Copy>
