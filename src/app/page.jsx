@@ -3,57 +3,48 @@
 import "./home.css";
 import { useRef } from "react";
 import { gsap } from "gsap";
+import { Flip } from "gsap/Flip";
 import { useGSAP } from "@gsap/react";
 import Copy from "@/components/copy/copy";
 import Vision from "@/components/vision/vision";
 import Benefits from "@/components/benefits/benefits";
 import Testimonial from "@/components/testimonial/testimonial";
 
-gsap.registerPlugin(useGSAP);
+gsap.registerPlugin(useGSAP, Flip);
 
 export default function Home() {
     const page = useRef(null);
     
 
-    useGSAP(() => {
-        const isMobile = window.innerWidth < 800;
-        const q = gsap.utils.selector(page);
+useGSAP(() => {
+    const isMobile = window.innerWidth < 800;
 
-        const hero = q("[data-hero]")[0].getBoundingClientRect();
-        const media = q("[data-media]")[0];
-        const target = q("[data-target]")[0];
-        const end = target.getBoundingClientRect();
+    const q = gsap.utils.selector(page);
 
-        const video = q("[data-video]")[0];
-        const poster = q("[data-poster]")[0];
+    const media = q("[data-media]")[0];
+    const target = q("[data-target]")[0];
 
-        // video.addEventListener("loadedmetadata", () => {
-        //     video.currentTime = 0.03;
-        // }, { once: true });
+    gsap.delayedCall(0.5, () => {
 
-        // video.addEventListener("canplay", () => {
-        //     gsap.delayedCall(0.5, () => {
-        //         poster.style.display = "none";
-        //         video.play().catch(console.error);
-        //     });
-        // }, { once: true });
+        const state = Flip.getState(media);
 
-        gsap.to(media, {
-            left: end.left - hero.left,
-            top: end.top - hero.top,
-            width: end.width ,
-            height: end.height,
+        target.appendChild(media);
+
+        Flip.from(state, {
             duration: 1.5,
-            delay:.5,
-            y:isMobile ? 8 : 0,
             ease: "power4.inOut",
+            absolute: true,
+            simple: true,
             onComplete: () => {
-                target.appendChild(media);
-                gsap.set(media, { clearProps: "all" });
+                gsap.set(media, {
+                    clearProps: "all"
+                });
             }
         });
 
-    }, { scope: page });
+    });
+
+}, { scope: page });
 
     return (
         <main ref={page}>

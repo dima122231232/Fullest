@@ -26,14 +26,14 @@ export default function Benefits(){
         ScrollTrigger.create({
             trigger:section.current,
             start:"top top",
-            end: () => `+=${window.innerHeight * (isMobile ? 1.7 : 1)}`,
+            end: () => `+=${window.innerHeight * (isMobile ? 1.2 : 1)}`,
             pin: isMobile ? false : true,
             pinSpacing:true,
             scrub:0,
             invalidateOnRefresh: true,
             onUpdate:(self) =>{
                 const scrollProgress = self.progress;
-                const animProgress = gsap.utils.interpolate(0, isMobile ? -80 : -140, self.progress);
+                const animProgress = gsap.utils.interpolate(0, isMobile ? -80 : -140, scrollProgress);
 
                 gsap.set(one, { y: animProgress });
                 gsap.set(three, { y: -animProgress });
@@ -42,7 +42,7 @@ export default function Benefits(){
                 gsap.set(backThree, { yPercent: -100, y: -animProgress });           
                 
                 if (!isMobile){
-                    const imageIndex = Math.round(gsap.utils.interpolate(1, 9, self.progress));
+                    const imageIndex = Math.round(gsap.utils.interpolate(1, 9, scrollProgress));
                     pill.src = `/pills/pill-${imageIndex}.png`;
                 }
             }

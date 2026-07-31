@@ -1,19 +1,8 @@
-"use client";
-
 import "./footer.css"
-import { useRef } from "react";
-import { gsap } from "gsap";
-import { useGSAP } from "@gsap/react";
 
 export default function Footer(){
-    const footer = useRef(null);
-
-    useGSAP(() =>{
-        const isMobile = window.innerWidth < 800;
-
-    }, {scope: footer})
     return(
-        <footer ref={footer} className="footer">
+        <footer className="footer">
             <div className="footer-anim">
                 <div className="container footer__container">
                     <div className="footer__content">
