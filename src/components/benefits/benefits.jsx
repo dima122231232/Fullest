@@ -9,46 +9,53 @@ gsap.registerPlugin(ScrollTrigger);
 
 export default function Benefits(){
     const section = useRef(null);
-    useGSAP(() =>{
+
+    useGSAP((context) =>{
         const isMobile = window.innerWidth < 1000;
-        const q = gsap.utils.selector(section);
+        const q = context.selector;
+
         const one = q(".one");
         const three = q(".three");
         const backOne = q(".back-circles.one");
         const backThree = q(".back-circles.three");
         const pill = q(".benefits__pill-img")[0];
+
         const pills = Array.from({ length: 9 }, (_, i) => `/pills/pill-${i + 1}.png`);
 
         gsap.set(backOne, { yPercent: 100 });
         gsap.set(backThree, { yPercent: -100 });
 
-        
-        ScrollTrigger.create({
-            trigger:section.current,
-            start:"top top",
-            end: () => `+=${window.innerHeight * (isMobile ? 1.2 : 1)}`,
-            pin: isMobile ? false : true,
-            pinSpacing:true,
-            scrub:0,
-            invalidateOnRefresh: true,
-            onUpdate:(self) =>{
-                const scrollProgress = self.progress;
-                const animProgress = gsap.utils.interpolate(0, isMobile ? -80 : -140, scrollProgress);
+        const endValue = window.innerHeight * (isMobile ? 1.2 : 1);
 
-                gsap.set(one, { y: animProgress });
-                gsap.set(three, { y: -animProgress });
-
-                gsap.set(backOne, { yPercent: 100, y: animProgress });
-                gsap.set(backThree, { yPercent: -100, y: -animProgress });           
-                
-                if (!isMobile){
-                    const imageIndex = Math.round(gsap.utils.interpolate(1, 9, scrollProgress));
-                    pill.src = `/pills/pill-${imageIndex}.png`;
+        const tl = gsap.timeline({
+            scrollTrigger: {
+                trigger: section.current,
+                start: "top top",
+                end: `+=${endValue}`,
+                pin: isMobile ? false : true,
+                pinSpacing: true,
+                scrub: true,
+                invalidateOnRefresh: true,
+                onUpdate: (self) => {
+                    if (!isMobile){
+                        const imageIndex = Math.round(
+                            gsap.utils.interpolate(1, 9, self.progress)
+                        );
+                        pill.src = `/pills/pill-${imageIndex}.png`;
+                    }
                 }
             }
-        })
-    }, {scope: section})
-    
+        });
+
+        const yValue = isMobile ? -80 : -140;
+
+        tl.to(one, { y: yValue }, 0)
+          .to(three, { y: -yValue }, 0)
+          .to(backOne, { y: yValue }, 0)
+          .to(backThree, { y: -yValue }, 0);
+
+    }, {scope: section});
+
     return(
         <section ref={section} className="benefits">
             <div className="container benefits__container">
@@ -58,16 +65,20 @@ export default function Benefits(){
                         <p>Your supplements work best when they're supported by the right routines and environment. Fullest helps you understand the small changes that can make the biggest difference.</p>
                     </Copy>
                 </div>
+
                 <div className="benefits__visual">
                     <div className="benefits__visual-block">
                         <div className="back-circles one"></div>
                         <div className="back-circles two"></div>
                         <div className="back-circles three"></div>
-                            <img src="/pills/pill-9.png" alt="pill" className="benefits__pill-img"/>
+
+                        <img src="/pills/pill-9.png" alt="pill" className="benefits__pill-img"/>
+
                         <div className="front-circles one"></div>
                         <div className="front-circles two"></div>
                         <div className="front-circles three"></div>
                     </div>
+
                     <div className="benefits-mono">
                         <span className="mono one">FORMULA</span>
                         <span className="mono two">Environment</span>
