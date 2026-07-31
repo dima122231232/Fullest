@@ -10,34 +10,37 @@ gsap.registerPlugin(ScrollTrigger);
 export default function Vision(){
     const section = useRef(null);
 
-    useGSAP((context) =>{
-        const q = context.selector;
-        const isMobile = window.innerWidth < 1200;
-        const card = q(".vision__card");
-        const segment = 1 / card.length;
-        const dash = q(".vision__timeline-desk .dash")[0];
-        const circles = q(".circle");
-        const circle = q(".divider-circle");
-        const dots = q(".divider-circle--animation");
-        const circleAnimation = q(".circle-animation")[0];
-        const dashes = q(".vision__divider .dash");
-        const part = 1 / dashes.length;
-        const shown = card.map(() => false); 
-        
-        const anim = {
-            duration: .12,
-            ease: "none"
-        };
-        let dashesWidth;
-        
-        ScrollTrigger.create({
-            trigger:section.current,
-            start:"top top",
-            end:() => `+=${window.innerHeight * (isMobile ? 2.2 : 2)}px`,
-            pin:isMobile ? false : true,
-            pinSpacing:true,
-            scrub:0,
+useGSAP((context) =>{
+    const q = context.selector;
+    const isMobile = window.innerWidth < 1200;
+
+    const card = q(".vision__card");
+    const segment = 1 / card.length;
+
+    const dash = q(".vision__timeline-desk .dash")[0];
+    const circles = q(".circle");
+    const circle = q(".divider-circle");
+    const dots = q(".divider-circle--animation");
+    const circleAnimation = q(".circle-animation")[0];
+    const dashes = q(".vision__divider .dash");
+
+    const part = 1 / dashes.length;
+    const shown = card.map(() => false); 
+
+    let dashesWidth;
+
+    const endValue = window.innerHeight * (isMobile ? 2.2 : 2);
+
+    const tl = gsap.timeline({
+        scrollTrigger: {
+            trigger: section.current,
+            start: "top top",
+            end: `+=${endValue}px`,
+            pin: isMobile ? false : true,
+            pinSpacing: true,
+            scrub: true,
             invalidateOnRefresh: true,
+
             onToggle: (self) => {
                 if (self.isActive) {
                     gsap.to(circles, { scale: 1, duration: .2 });
@@ -47,32 +50,44 @@ export default function Vision(){
                     gsap.to(circle[0], { scale: 0, duration: .2 });
                 }
             },
+
             onRefresh: () => {
                 dashesWidth = dashes[0].offsetWidth;
             },
-            onUpdate: (self) =>{
+
+            onUpdate: (self) => {
                 const scrollProgress = self.progress;
-                if (!isMobile) {
-                    gsap.set(circleAnimation,{left:`${gsap.utils.interpolate(0, 100, scrollProgress)}%`, ...anim})
-                    gsap.set(dash,{clipPath: `inset(0 ${100 - scrollProgress * 100}% 0 0)`, ...anim})
-                } else {
+
+                // ⚠️ mobile логика оставляем (слишком кастомная)
+                if (isMobile) {
                     dashes.forEach((dash, i) => {
                         const progress = gsap.utils.clamp(0, 1, (scrollProgress - i * part) / part);
 
-                        gsap.set(dash, {clipPath: `inset(0 ${100 - progress * 100}% 0 0)`, ...anim});
-                        gsap.set(dots[i], {x: Math.max(0, dashesWidth * progress - 5), ...anim});
+                        gsap.set(dash, {
+                            clipPath: `inset(0 ${100 - progress * 100}% 0 0)`
+                        });
 
-                        const active = i === dashes.length - 1 ? progress > 0 : progress > 0 && progress < 1;
+                        gsap.set(dots[i], {
+                            x: Math.max(0, dashesWidth * progress - 5)
+                        });
+
+                        const active = i === dashes.length - 1
+                            ? progress > 0
+                            : progress > 0 && progress < 1;
 
                         if (dots[i]._active !== active) {
                             dots[i]._active = active;
 
-                            gsap.to(dots[i], {scale: active ? 1 : 0,overwrite: true, ...anim});
+                            gsap.to(dots[i], {
+                                scale: active ? 1 : 0,
+                                overwrite: true,
+                                duration: .12
+                            });
                         }
                     });
-                    
                 }
 
+                // карточки (оставляем как есть)
                 card.forEach((item, index) => {
                     const trigger = index * segment + segment * (isMobile ? 0.15 : 0.5);
 
@@ -82,7 +97,7 @@ export default function Vision(){
                         gsap.fromTo(item,
                             {
                                 opacity: 0,
-                                scale:isMobile ? 1 : .9,
+                                scale: isMobile ? 1 : .9,
                             },
                             {
                                 opacity: 1,
@@ -99,7 +114,7 @@ export default function Vision(){
 
                         gsap.to(item, {
                             opacity: 0,
-                            scale:isMobile ? 1 : .9,
+                            scale: isMobile ? 1 : .9,
                             duration: .2,
                             ease: "power3.out",
                             overwrite: true
@@ -107,9 +122,23 @@ export default function Vision(){
                     }
                 });
             }
-        })
+        }
+    });
 
-    }, {scope: section})
+    // ✅ desktop анимации → в timeline
+    if (!isMobile) {
+        tl.to(circleAnimation, {
+            left: "100%",
+            ease: "none"
+        }, 0)
+
+        .to(dash, {
+            clipPath: "inset(0 0% 0 0)",
+            ease: "none"
+        }, 0);
+    }
+
+}, {scope: section});
     
     
     return(
