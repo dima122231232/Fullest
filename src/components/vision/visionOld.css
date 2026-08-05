@@ -60,7 +60,6 @@
     background-color: #000;
     scale:0;
     will-change: scale;
-    z-index: 2;
 }
 .vision__timeline-desk .circle-animation{
     position: absolute;
@@ -75,8 +74,21 @@
     
 }
 
-
-
+.vision__divider {
+    grid-column: 1 / -1;
+    width: 100%;
+    display: none;
+    transform: translateY(-3.5rem);
+    height: 20px;
+    align-items: center;    
+    position: relative;
+}
+.vision__divider .dash{
+    clip-path: inset(0 100% 0 0);
+    border-top: 1px dashed #000;
+    width: 100%;
+    will-change: clip-path;
+}
 .divider-circle{
     height:10px;
     aspect-ratio: 1 / 1;
@@ -113,54 +125,21 @@
         position: sticky;
         top: 10%;
     }
-    .vision__content {
-        display: grid;
-        grid-template-columns: 1fr 10px 1fr;
+    .vision__cards{
+        display:grid;
+        grid-template-columns:repeat(2, minmax(0, 1fr));
+        row-gap:calc(1.5rem - 10px);
+        column-gap:0rem;
+        padding:0;
     }
-
-    .vision__cards {
-        grid-column: 1 / -1;
-        grid-row: 1;
-
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        gap: 2rem;
-        padding: 0;
+    .vision__card:nth-child(7){
+        grid-column:1 / -1;
+        justify-self:center;
     }
-
-    .vision__card {
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-    }
-
-    .vision__images {
-        flex: 1;
-    }
-
-    .vision-md {
-        flex: 1;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-
-    .vision__timeline-desk {
-        grid-column: 2;
-        grid-row: 1;
-
-        align-self: stretch;
-        z-index: 1;
-        align-items: flex-start;
-        transform: none;
-    }
-    .circle{transform-origin: 50% 0%;}
-    .vision__timeline-desk .dash{position: relative;right:50%;transform: translateX(50%);clip-path: none;clip-path: inset(0 0 100% 0);height: 100%;border-left: 1px dashed #000;}
-    .vision__cards .vision__card:nth-child(1) .vision__images,
-    .vision__cards .vision__card:nth-child(3) .vision__images,
-    .vision__cards .vision__card:nth-child(5) .vision__images
-    {order: 1;}
+    .vision__timeline-desk{display: none;}
+    .vision__divider{display: flex;}
+    
+    
 }
 @media (max-width:800px) {
     .vision__container{gap:2rem;}

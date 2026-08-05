@@ -20,12 +20,15 @@ export default function Vision(){
         const circle = q(".divider-circle");
         const dots = q(".divider-circle--animation");
         const circleAnimation = q(".circle-animation")[0];
+        const dashes = q(".vision__divider .dash");
+        const part = 1 / dashes.length;
         const shown = card.map(() => false); 
         
         const anim = {
             duration: .12,
             ease: "none"
         };
+        let dashesWidth;
         
         ScrollTrigger.create({
             trigger:section.current,
@@ -44,14 +47,30 @@ export default function Vision(){
                     gsap.to(circle[0], { scale: 0, duration: .2 });
                 }
             },
+            onRefresh: () => {
+                dashesWidth = dashes[0].offsetWidth;
+            },
             onUpdate: (self) =>{
                 const scrollProgress = self.progress;
                 if (!isMobile) {
                     gsap.set(circleAnimation,{left:`${gsap.utils.interpolate(0, 100, scrollProgress)}%`, ...anim})
                     gsap.set(dash,{clipPath: `inset(0 ${100 - scrollProgress * 100}% 0 0)`, ...anim})
                 } else {
-                    gsap.set(circleAnimation,{top:`${gsap.utils.interpolate(0, 100, scrollProgress)}%`, ...anim})
-                    gsap.set(dash,{clipPath: `inset(0 0 ${100 - scrollProgress * 100}% 0)`, ...anim})
+                    dashes.forEach((dash, i) => {
+                        const progress = gsap.utils.clamp(0, 1, (scrollProgress - i * part) / part);
+
+                        gsap.set(dash, {clipPath: `inset(0 ${100 - progress * 100}% 0 0)`, ...anim});
+                        gsap.set(dots[i], {x: Math.max(0, dashesWidth * progress - 5), ...anim});
+
+                        const active = i === dashes.length - 1 ? progress > 0 : progress > 0 && progress < 1;
+
+                        if (dots[i]._active !== active) {
+                            dots[i]._active = active;
+
+                            gsap.to(dots[i], {scale: active ? 1 : 0,overwrite: true, ...anim});
+                        }
+                    });
+                    
                 }
 
                 card.forEach((item, index) => {
@@ -119,6 +138,11 @@ export default function Vision(){
                             <p className="md vision-md">Calm your mind</p>
                         </div>
 
+                        <div className="vision__divider">
+                            <div className="divider-circle" style={{scale:0}}></div><div className="divider-circle divider-circle--animation"></div>
+                            <div className="dash"></div>
+                        </div>
+
                         <div className="vision__card">
                             <div className="vision__images">
                                 <img src="/pills/pill-5.png" alt="pill" className = "pill"/>
@@ -135,11 +159,21 @@ export default function Vision(){
                             <p className="md vision-md">Better rest</p>
                         </div>
 
+                        <div className="vision__divider">
+                            <div className="divider-circle divider-circle--animation"></div>
+                            <div className="dash"></div>    
+                        </div>
+
                         <div className="vision__card">
                             <div className="vision__images">
                                 <img src="/pills/pill-9.png" alt="pill" className = "pill"/>
                             </div>
                             <p className="md vision-md">Reduce stress</p>
+                        </div>
+
+                        <div className="vision__divider">
+                            <div className="divider-circle divider-circle--animation"></div>
+                            <div className="dash"></div>    
                         </div>
 
                     </div>
