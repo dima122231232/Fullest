@@ -18,7 +18,6 @@ export default function Vision(){
         const dash = q(".vision__timeline-desk .dash")[0];
         const circles = q(".circle");
         const circle = q(".divider-circle");
-        const dots = q(".divider-circle--animation");
         const circleAnimation = q(".circle-animation")[0];
         const shown = card.map(() => false); 
         
@@ -47,11 +46,11 @@ export default function Vision(){
             onUpdate: (self) =>{
                 const scrollProgress = self.progress;
                 if (!isMobile) {
-                    gsap.set(circleAnimation,{left:`${gsap.utils.interpolate(0, 100, scrollProgress)}%`, ...anim})
+                    gsap.set(circleAnimation, {x: gsap.utils.interpolate(0,dash.getBoundingClientRect().width,scrollProgress), ...anim});
                     gsap.set(dash,{clipPath: `inset(0 ${100 - scrollProgress * 100}% 0 0)`, ...anim})
                 } else {
-                    gsap.set(circleAnimation,{top:`${gsap.utils.interpolate(0, 100, scrollProgress)}%`, ...anim})
-                    gsap.set(dash,{clipPath: `inset(0 0 ${100 - scrollProgress * 100}% 0)`, ...anim})
+                    gsap.to(circleAnimation, {y: gsap.utils.interpolate(0,dash.getBoundingClientRect().height,scrollProgress), ...anim});
+                    gsap.to(dash,{clipPath: `inset(0 0 ${100 - scrollProgress * 100}% 0)`, ...anim})
                 }
 
                 card.forEach((item, index) => {
