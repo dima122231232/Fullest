@@ -17,7 +17,6 @@ export default function Vision(){
         const segment = 1 / card.length;
         const dash = q(".vision__timeline-desk .dash")[0];
         const circles = q(".circle");
-        const circle = q(".divider-circle");
         const circleAnimation = q(".circle-animation")[0];
         const shown = card.map(() => false); 
         
@@ -37,10 +36,8 @@ export default function Vision(){
             onToggle: (self) => {
                 if (self.isActive) {
                     gsap.to(circles, { scale: 1, duration: .2 });
-                    gsap.to(circle[0], { scale: 1, duration: .2 });
                 } else if (self.direction === -1) {
                     gsap.to(circles, { scale: 0, duration: .2 });
-                    gsap.to(circle[0], { scale: 0, duration: .2 });
                 }
             },
             onUpdate: (self) =>{
@@ -49,8 +46,8 @@ export default function Vision(){
                     gsap.set(circleAnimation, {x: gsap.utils.interpolate(0,dash.getBoundingClientRect().width,scrollProgress), ...anim});
                     gsap.set(dash,{clipPath: `inset(0 ${100 - scrollProgress * 100}% 0 0)`, ...anim})
                 } else {
-                    gsap.to(circleAnimation, {y: gsap.utils.interpolate(0,dash.getBoundingClientRect().height,scrollProgress), ...anim});
-                    gsap.to(dash,{clipPath: `inset(0 0 ${100 - scrollProgress * 100}% 0)`, ...anim})
+                    gsap.set(circleAnimation, {y: gsap.utils.interpolate(0,dash.getBoundingClientRect().height,scrollProgress), ...anim});
+                    gsap.set(dash,{clipPath: `inset(0 0 ${100 - scrollProgress * 100}% 0)`, ...anim})
                 }
 
                 card.forEach((item, index) => {

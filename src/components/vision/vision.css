@@ -75,21 +75,6 @@
     
 }
 
-
-
-.divider-circle{
-    height:10px;
-    aspect-ratio: 1 / 1;
-    border-radius: 50%;
-    background-color: #000;
-    position: absolute;
-    left:0%;
-    will-change: transform;
-}
-.divider-circle--animation{
-    scale:0;
-    will-change: transform;
-}
 .vision--block{
     height:100svh;
     background-color: var(--base-200);
