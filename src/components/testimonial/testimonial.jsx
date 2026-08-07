@@ -10,7 +10,7 @@ import Copy from "@/components/copy/copy";
 gsap.registerPlugin(useGSAP, Draggable, InertiaPlugin);
 
 export default function Testimonial() {
-    const section = useRef(null);
+const section = useRef(null);
 
     useGSAP(() => {
         const isMobile = window.innerWidth < 800;
@@ -67,7 +67,6 @@ export default function Testimonial() {
             video.loop = false;
             video.muted = true;
             video.preload = "auto";
-            // video.load();
         });
 
         const playVideo = (index) => {
@@ -137,7 +136,6 @@ export default function Testimonial() {
                     video.muted = index !== activeIndex;
                 });
 
-                playVideo(activeIndex);
                 handleAudioToggle("1");
             } else {
                 videos.forEach((video) => {
@@ -267,7 +265,6 @@ export default function Testimonial() {
 
         const handleVideoEnded = (index) => {
             const nextIndex = index === videos.length - 1 ? 0 : index + 1;
-
             selectVideo(nextIndex);
         };
 
@@ -304,14 +301,6 @@ export default function Testimonial() {
         return () => {
             window.removeEventListener("resize", create);
             audio.removeEventListener("click", toggleAudio);
-
-            people.forEach((person, index) => {
-                person.removeEventListener("click", () => handlePersonClick(index));
-            });
-
-            videos.forEach((video, index) => {
-                video.removeEventListener("ended", () => handleVideoEnded(index));
-            });
 
             pauseAllVideos();
             Draggable.get(track)?.kill();
