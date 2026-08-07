@@ -15,35 +15,35 @@ export default function Home() {
     const page = useRef(null);
     
 
-useLayoutEffect(() => {
-    const isMobile = window.innerWidth < 800;
+    useLayoutEffect(() => {
+        const isMobile = window.innerWidth < 800;
 
-    const q = gsap.utils.selector(page);
+        const q = gsap.utils.selector(page);
 
-    const media = q("[data-media]")[0];
-    const target = q("[data-target]")[0];
+        const media = q("[data-media]")[0];
+        const target = q("[data-target]")[0];
 
-    gsap.delayedCall(0.5, () => {
+        gsap.delayedCall(0.5, () => {
 
-        const state = Flip.getState(media);
+            const state = Flip.getState(media);
 
-        target.appendChild(media);
+            target.appendChild(media);
 
-        Flip.from(state, {
-            duration: 1.5,
-            ease: "power4.inOut",
-            absolute: true,
-            simple: true,
-            onComplete: () => {
-                gsap.set(media, {
-                    clearProps: "all"
-                });
-            }
+            Flip.from(state, {
+                duration: 1.5,
+                ease: "power4.inOut",
+                absolute: true,
+                simple: true,
+                onComplete: () => {
+                    gsap.set(media, {
+                        clearProps: "all"
+                    });
+                }
+            });
+
         });
 
-    });
-
-}, { scope: page });
+    }, { scope: page });
 
     return (
         <main ref={page}>

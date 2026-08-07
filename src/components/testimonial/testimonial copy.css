@@ -56,14 +56,11 @@
 .testimonial__videos:active{
     cursor: grabbing;
 }
-.testimonial__container-people{
-    margin:0 auto;
-    transform: translateX(.75rem);
-    /* overflow: hidden; */
-}
+
 .testimonial__people{
     display: flex;
-    gap:.75rem;
+    gap:.875rem;
+    margin:0 auto;
 }
 .testimonial__person{
     position: relative;
@@ -72,8 +69,6 @@
     width:0%;
     min-width: 2rem;
     cursor: pointer;
-    transform-origin:0% 0%;
-    will-change: transform;
 }
 .testimonial__hidden .h{
     min-width: 2rem;
@@ -95,18 +90,6 @@
     z-index: 2;
     position: absolute;
     left: .75rem;
-    object-fit: fill;
-}
-.testimonial__wrapper-play{
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-.testimonial__wrapper-play svg{
-    height:17.6px;
-    width:19.2px;
-    position: absolute;
-    opacity:0;
 }
 .triangle{
     width: 0;
@@ -118,12 +101,9 @@
 .testimonial__wrapper{
     width:0px;
     overflow: hidden;
-    will-change: width , scale;
 }
 .testimonial__activity .testimonial__wrapper{width: 140px;}
-.testimonial__activity {width:100%;
-    transform: translateX(.75rem);
-}
+.testimonial__activity {width:100%;transform: translateX(.75rem);}
 /* .testimonial__activity .testimonial__avatar{left: .75rem;} */
 
 @media (max-width:800px) {
