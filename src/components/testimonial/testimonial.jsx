@@ -67,6 +67,8 @@ export default function Testimonial() {
         videos.forEach((video) => {
             video.loop = true;
             video.muted = true;
+            video.preload = "auto";
+            video.load();
         });
 
         const playVideo = (index) => {

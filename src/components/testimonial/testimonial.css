@@ -151,7 +151,7 @@
     .testimonial__track{gap:1rem;}
     .testimonial__video{width: 80%;}
     .testimonial__track::before,
-    .testimonial__track::after{flex:0 0 0%;}
+    .testimonial__track::after{flex:0 0 1rem;}
     .testimonial__container{gap:2rem;}
     .testimonial__quote{padding:0 1rem;text-align: start;}
     .testimonial__container-people{justify-content: space-between;margin: 0;transform:none;}
