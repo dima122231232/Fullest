@@ -8,6 +8,7 @@ import { InertiaPlugin } from "gsap/InertiaPlugin";
 import Copy from "@/components/copy/copy";
 
 gsap.registerPlugin(useGSAP, Draggable, InertiaPlugin);
+
 export default function Testimonial() {
     const section = useRef(null);
 
@@ -31,6 +32,7 @@ export default function Testimonial() {
             duration: .75,
             ease: "power2.inOut"
         };
+
         const audioAnim = {
             duration: .2,
             ease: "power2.out"
@@ -44,10 +46,7 @@ export default function Testimonial() {
 
             gsap.set(track, { x: 0 });
 
-            const minX = Math.min(
-                0,
-                container.offsetWidth - track.scrollWidth
-            );
+            const minX = Math.min(0, container.offsetWidth - track.scrollWidth);
 
             Draggable.create(track, {
                 trigger: container,
@@ -65,10 +64,10 @@ export default function Testimonial() {
         };
 
         videos.forEach((video) => {
-            video.loop = true;
+            video.loop = false;
             video.muted = true;
             video.preload = "auto";
-            video.load();
+            // video.load();
         });
 
         const playVideo = (index) => {
@@ -77,7 +76,6 @@ export default function Testimonial() {
             if (!video) return;
 
             video.muted = !audioEnabled;
-
             video.play().catch(() => {});
         };
 
@@ -98,7 +96,6 @@ export default function Testimonial() {
 
         const handleToggle = (value, person) => {
             const pause = person.querySelector(".testimonial__wrapper-play svg");
-
             const play = person.querySelector(".testimonial__wrapper-play .triangle");
 
             const activeIcon = value === "1" ? pause : play;
@@ -106,18 +103,14 @@ export default function Testimonial() {
 
             gsap.set(hiddenIcon, { opacity: 0 });
 
-            gsap.fromTo(
-                activeIcon,
-                {
-                    opacity: 0,
-                    scale: .9
-                },
-                {
-                    opacity: 1,
-                    scale: 1,
-                    ...audioAnim
-                }
-            );
+            gsap.fromTo(activeIcon, {
+                opacity: 0,
+                scale: .9
+            }, {
+                opacity: 1,
+                scale: 1,
+                ...audioAnim
+            });
         };
 
         const handleAudioToggle = (value) => {
@@ -126,18 +119,14 @@ export default function Testimonial() {
 
             gsap.set(hiddenIcon, { opacity: 0 });
 
-            gsap.fromTo(
-                activeIcon,
-                {
-                    opacity: 0,
-                    scale: .9
-                },
-                {
-                    opacity: 1,
-                    scale: 1,
-                    ...audioAnim
-                }
-            );
+            gsap.fromTo(activeIcon, {
+                opacity: 0,
+                scale: .9
+            }, {
+                opacity: 1,
+                scale: 1,
+                ...audioAnim
+            });
         };
 
         const toggleAudio = () => {
@@ -149,7 +138,6 @@ export default function Testimonial() {
                 });
 
                 playVideo(activeIndex);
-
                 handleAudioToggle("1");
             } else {
                 videos.forEach((video) => {
@@ -162,10 +150,7 @@ export default function Testimonial() {
 
         const updatePeople = (index) => {
             people.forEach((person, i) => {
-                const wrapper = person.querySelector(
-                    ".testimonial__wrapper"
-                );
-
+                const wrapper = person.querySelector(".testimonial__wrapper");
                 const isActive = i === index;
 
                 gsap.to(person, {
@@ -187,38 +172,17 @@ export default function Testimonial() {
 
             if (!video) return;
 
-            const containerRect =
-                container.getBoundingClientRect();
+            const containerRect = container.getBoundingClientRect();
+            const videoRect = video.getBoundingClientRect();
 
-            const videoRect =
-                video.getBoundingClientRect();
+            const containerCenter = containerRect.left + containerRect.width / 2;
+            const videoCenter = videoRect.left + videoRect.width / 2;
 
-            const containerCenter =
-                containerRect.left +
-                containerRect.width / 2;
+            const currentX = gsap.getProperty(track, "x") || 0;
+            const targetX = currentX + containerCenter - videoCenter;
 
-            const videoCenter =
-                videoRect.left +
-                videoRect.width / 2;
-
-            const currentX =
-                gsap.getProperty(track, "x") || 0;
-
-            const targetX =
-                currentX +
-                containerCenter -
-                videoCenter;
-
-            const minX = Math.min(
-                0,
-                container.offsetWidth - track.scrollWidth
-            );
-
-            const x = gsap.utils.clamp(
-                minX,
-                0,
-                targetX
-            );
+            const minX = Math.min(0, container.offsetWidth - track.scrollWidth);
+            const x = gsap.utils.clamp(minX, 0, targetX);
 
             gsap.to(track, {
                 x,
@@ -239,7 +203,6 @@ export default function Testimonial() {
                 person.dataset.toggle = "1";
 
                 handleToggle("1", person);
-
                 playVideo(index);
             }
 
@@ -248,27 +211,16 @@ export default function Testimonial() {
         };
 
         const syncActiveVideo = () => {
-            const containerRect =
-                container.getBoundingClientRect();
-
-            const containerCenter =
-                containerRect.left +
-                containerRect.width / 2;
+            const containerRect = container.getBoundingClientRect();
+            const containerCenter = containerRect.left + containerRect.width / 2;
 
             let closestIndex = 0;
             let closestDistance = Infinity;
 
             videos.forEach((video, index) => {
-                const videoRect =
-                    video.getBoundingClientRect();
-
-                const videoCenter =
-                    videoRect.left +
-                    videoRect.width / 2;
-
-                const distance = Math.abs(
-                    containerCenter - videoCenter
-                );
+                const videoRect = video.getBoundingClientRect();
+                const videoCenter = videoRect.left + videoRect.width / 2;
+                const distance = Math.abs(containerCenter - videoCenter);
 
                 if (distance < closestDistance) {
                     closestDistance = distance;
@@ -292,18 +244,11 @@ export default function Testimonial() {
                 person.dataset.toggle = "1";
 
                 handleToggle("1", person);
-
                 playVideo(index);
             } else {
-                person.dataset.toggle =
-                    person.dataset.toggle === "2"
-                        ? "1"
-                        : "2";
+                person.dataset.toggle = person.dataset.toggle === "2" ? "1" : "2";
 
-                handleToggle(
-                    person.dataset.toggle,
-                    person
-                );
+                handleToggle(person.dataset.toggle, person);
 
                 if (person.dataset.toggle === "1") {
                     playVideo(index);
@@ -316,21 +261,29 @@ export default function Testimonial() {
             centerVideo(index);
         };
 
+        const handlePersonClick = (index) => {
+            umschalten(index);
+        };
+
+        const handleVideoEnded = (index) => {
+            const nextIndex = index === videos.length - 1 ? 0 : index + 1;
+
+            selectVideo(nextIndex);
+        };
+
         people.forEach((person, index) => {
-            person.addEventListener("click", () => {
-                umschalten(index);
-            });
+            person.addEventListener("click", () => handlePersonClick(index));
+        });
+
+        videos.forEach((video, index) => {
+            video.addEventListener("ended", () => handleVideoEnded(index));
         });
 
         audio.addEventListener("click", toggleAudio);
 
         people.forEach((person, index) => {
             person.dataset.toggle = index === 0 ? "1" : "2";
-
-            handleToggle(
-                person.dataset.toggle,
-                person
-            );
+            handleToggle(person.dataset.toggle, person);
         });
 
         handleAudioToggle("2");
@@ -344,14 +297,21 @@ export default function Testimonial() {
             centerVideo(0);
         });
 
-        if(!isMobile){
+        if (!isMobile) {
             window.addEventListener("resize", create);
         }
 
         return () => {
             window.removeEventListener("resize", create);
-
             audio.removeEventListener("click", toggleAudio);
+
+            people.forEach((person, index) => {
+                person.removeEventListener("click", () => handlePersonClick(index));
+            });
+
+            videos.forEach((video, index) => {
+                video.removeEventListener("ended", () => handleVideoEnded(index));
+            });
 
             pauseAllVideos();
             Draggable.get(track)?.kill();
@@ -371,9 +331,9 @@ export default function Testimonial() {
                 <div className="testimonial__media">
                     <div className="testimonial__videos">
                         <div className="testimonial__track">
-                            <video className="testimonial__video" src="/home/video/video.mp4" muted preload="auto" playsInline ></video>
-                            <video className="testimonial__video" src="/home/video/video.mp4" muted preload="auto" playsInline ></video>
-                            <video className="testimonial__video" src="/home/video/video.mp4" muted preload="auto" playsInline ></video>
+                            <video className="testimonial__video" src="/home/video/video.mp4" muted playsInline ></video>
+                            <video className="testimonial__video" src="/home/video/video.mp4" muted playsInline ></video>
+                            <video className="testimonial__video" src="/home/video/video.mp4" muted playsInline ></video>
                             {/* <img className="testimonial__video" src="/testimonial/p1.jpg" alt="video testimonial" />
                             <img className="testimonial__video" src="/testimonial/p2.png" alt="video testimonial" />
                             <img className="testimonial__video" src="/testimonial/p1.jpg" alt="video testimonial" /> */}
