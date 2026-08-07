@@ -369,9 +369,9 @@ export default function Testimonial() {
                 <div className="testimonial__media">
                     <div className="testimonial__videos">
                         <div className="testimonial__track">
-                            <video className="testimonial__video" src="/home/video/video.mp4" muted playsInline ></video>
-                            <video className="testimonial__video" src="/home/video/video.mp4" muted playsInline ></video>
-                            <video className="testimonial__video" src="/home/video/video.mp4" muted playsInline ></video>
+                            <video className="testimonial__video" src="/home/video/video.mp4" muted preload="auto" playsInline ></video>
+                            <video className="testimonial__video" src="/home/video/video.mp4" muted preload="auto" playsInline ></video>
+                            <video className="testimonial__video" src="/home/video/video.mp4" muted preload="auto" playsInline ></video>
                             {/* <img className="testimonial__video" src="/testimonial/p1.jpg" alt="video testimonial" />
                             <img className="testimonial__video" src="/testimonial/p2.png" alt="video testimonial" />
                             <img className="testimonial__video" src="/testimonial/p1.jpg" alt="video testimonial" /> */}
