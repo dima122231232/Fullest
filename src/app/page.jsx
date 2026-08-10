@@ -43,7 +43,7 @@ export default function Home() {
 
         });
 
-    }, { scope: page });
+    }, []);
 
     return (
         <main ref={page}>
