@@ -63,7 +63,7 @@ main {
 
     overflow: hidden;
     clip-path: inset(18px round 20px);
-    will-change: transform , left , top;
+    will-change: transform;
 }
 
 .hero__video{
