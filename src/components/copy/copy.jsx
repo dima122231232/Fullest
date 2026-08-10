@@ -11,7 +11,7 @@ import { useGSAP } from "@gsap/react";
 
 gsap.registerPlugin(SplitText, ScrollTrigger);
 
-const REQUIRED_FONTS = ["Verilet", "Cossette Titre", "SUSE Mono"];
+const REQUIRED_FONTS = ["TWK"];
 
 const TEXT_SELECTOR =
   "h1,h2,h3,h4,h5,h6,p,a,li,label,blockquote,figcaption,span";
