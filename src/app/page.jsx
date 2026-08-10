@@ -25,11 +25,36 @@ export default function Home() {
 
         let cancelled = false;
 
-        const waitForImage = async () => {
+        const waitForPage = async () => {
+            /*
+             * Ждём полной загрузки ресурсов страницы.
+             */
+            if (document.readyState !== "complete") {
+                await new Promise((resolve) => {
+                    window.addEventListener("load", resolve, {
+                        once: true
+                    });
+                });
+            }
+
+            /*
+             * Ждём готовности шрифтов.
+             */
+            await document.fonts.ready;
+
+            /*
+             * Дополнительно ждём декодирования изображения,
+             * которое участвует в FLIP.
+             */
             if (!image.complete) {
                 await new Promise((resolve) => {
-                    image.addEventListener("load", resolve, { once: true });
-                    image.addEventListener("error", resolve, { once: true });
+                    image.addEventListener("load", resolve, {
+                        once: true
+                    });
+
+                    image.addEventListener("error", resolve, {
+                        once: true
+                    });
                 });
             }
 
@@ -41,10 +66,14 @@ export default function Home() {
         };
 
         const startAnimation = async () => {
-            await waitForImage();
+            await waitForPage();
 
             if (cancelled) return;
 
+            /*
+             * Даём браузеру завершить layout и paint
+             * перед измерением FLIP.
+             */
             await new Promise((resolve) => {
                 requestAnimationFrame(() => {
                     requestAnimationFrame(resolve);
@@ -52,6 +81,12 @@ export default function Home() {
             });
 
             if (cancelled) return;
+
+            /*
+             * ============================================================
+             * ТВОЯ СТАРАЯ FLIP-ЛОГИКА
+             * ============================================================
+             */
 
             const state = Flip.getState(media);
 
@@ -93,15 +128,15 @@ export default function Home() {
 
                 <div className="container hero__container">
                     <div className="hero__content">
-                        <Copy 
-                            animateOnScroll={false} 
+                        <Copy
+                            animateOnScroll={false}
                             delay={.6}
                         >
                             <h1>Your co-pilot for everyday wellbeing.</h1>
                         </Copy>
 
-                        <Copy 
-                            animateOnScroll={false} 
+                        <Copy
+                            animateOnScroll={false}
                             delay={.6}
                             type="words"
                             stagger={0.035}
