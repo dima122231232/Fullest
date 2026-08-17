@@ -59,9 +59,48 @@ export default function Testimonial() {
         let audioEnabled = false;
 
         /*
-         * ============================================================
-         * PEOPLE CONTAINER
-         * ============================================================
+         * --------------------------------------------------
+         * VIDEO SETUP
+         * --------------------------------------------------
+         */
+
+        videos.forEach((video) => {
+            video.loop = false;
+            video.muted = true;
+            video.preload = "auto";
+            video.playsInline = true;
+        });
+
+        /*
+         * На мобильных сразу инициируем загрузку
+         * всех видео.
+         *
+         * load() не запускает воспроизведение.
+         * Он только заставляет браузер начать
+         * обработку/загрузку media source.
+         *
+         * Проверка readyState не дает вызывать
+         * load() повторно без необходимости.
+         */
+        const preloadMobileVideos = () => {
+            if (!isMobile) return;
+
+            videos.forEach((video) => {
+                if (
+                    video.readyState ===
+                    HTMLMediaElement.HAVE_NOTHING
+                ) {
+                    video.load();
+                }
+            });
+        };
+
+        preloadMobileVideos();
+
+        /*
+         * --------------------------------------------------
+         * PEOPLE CONTAINERS
+         * --------------------------------------------------
          */
 
         const setupPeopleContainers = () => {
@@ -88,9 +127,9 @@ export default function Testimonial() {
         };
 
         /*
-         * ============================================================
-         * AUDIO UI
-         * ============================================================
+         * --------------------------------------------------
+         * AUDIO ICONS
+         * --------------------------------------------------
          */
 
         const setAudioIconState = (value) => {
@@ -177,9 +216,9 @@ export default function Testimonial() {
         };
 
         /*
-         * ============================================================
-         * DRAG
-         * ============================================================
+         * --------------------------------------------------
+         * DRAGGABLE
+         * --------------------------------------------------
          */
 
         const create = () => {
@@ -207,21 +246,19 @@ export default function Testimonial() {
                 activeCursor: "grabbing"
             });
 
-            Draggable.get(track).vars.onThrowComplete =
-                syncActiveVideo;
+            const draggable = Draggable.get(track);
+
+            if (draggable) {
+                draggable.vars.onThrowComplete =
+                    syncActiveVideo;
+            }
         };
 
         /*
-         * ============================================================
-         * VIDEOS
-         * ============================================================
+         * --------------------------------------------------
+         * VIDEO CONTROL
+         * --------------------------------------------------
          */
-
-        videos.forEach((video) => {
-            video.loop = false;
-            video.muted = true;
-            video.preload = "auto";
-        });
 
         const playVideo = (index) => {
             const video = videos[index];
@@ -229,6 +266,20 @@ export default function Testimonial() {
             if (!video) return;
 
             video.muted = !audioEnabled;
+
+            /*
+             * Дополнительная защита:
+             * если браузер еще вообще не начал
+             * загружать видео, инициируем load().
+             *
+             * Это особенно важно на мобильных.
+             */
+            if (
+                video.readyState ===
+                HTMLMediaElement.HAVE_NOTHING
+            ) {
+                video.load();
+            }
 
             video.play().catch(() => {});
         };
@@ -249,9 +300,9 @@ export default function Testimonial() {
         };
 
         /*
-         * ============================================================
-         * PERSON PLAY / PAUSE ICON
-         * ============================================================
+         * --------------------------------------------------
+         * PLAY / PAUSE ICON
+         * --------------------------------------------------
          */
 
         const handleToggle = (value, person) => {
@@ -292,9 +343,9 @@ export default function Testimonial() {
         };
 
         /*
-         * ============================================================
+         * --------------------------------------------------
          * PEOPLE UPDATE
-         * ============================================================
+         * --------------------------------------------------
          */
 
         const updatePeople = (index) => {
@@ -312,12 +363,6 @@ export default function Testimonial() {
 
                     const isActive = i === index;
 
-                    /*
-                     * Container:
-                     * active   = width of first container
-                     * inactive = 2.75rem
-                     */
-
                     gsap.to(
                         peopleContainer,
                         {
@@ -327,12 +372,6 @@ export default function Testimonial() {
                             ...anim
                         }
                     );
-
-                    /*
-                     * Person:
-                     * active   = full width
-                     * inactive = 2rem
-                     */
 
                     gsap.to(person, {
                         width: isActive
@@ -346,10 +385,6 @@ export default function Testimonial() {
                         ...anim
                     });
 
-                    /*
-                     * Wrapper
-                     */
-
                     gsap.to(wrapper, {
                         width: isActive
                             ? personWidth
@@ -362,12 +397,6 @@ export default function Testimonial() {
                         ...anim
                     });
 
-                    /*
-                     * Audio:
-                     * active   = scale 1
-                     * inactive = scale 0
-                     */
-
                     if (audio) {
                         gsap.to(audio, {
                             scale: isActive
@@ -379,18 +408,13 @@ export default function Testimonial() {
                 }
             );
 
-            /*
-             * Keep the audio control logic
-             * synchronized with the active person.
-             */
-
             updateAudioVisibility(index);
         };
 
         /*
-         * ============================================================
+         * --------------------------------------------------
          * CENTER VIDEO
-         * ============================================================
+         * --------------------------------------------------
          */
 
         const centerVideo = (index) => {
@@ -442,9 +466,9 @@ export default function Testimonial() {
         };
 
         /*
-         * ============================================================
+         * --------------------------------------------------
          * SELECT VIDEO
-         * ============================================================
+         * --------------------------------------------------
          */
 
         const selectVideo = (index) => {
@@ -472,9 +496,9 @@ export default function Testimonial() {
         };
 
         /*
-         * ============================================================
-         * SYNC ACTIVE VIDEO
-         * ============================================================
+         * --------------------------------------------------
+         * SYNC AFTER DRAG
+         * --------------------------------------------------
          */
 
         const syncActiveVideo = () => {
@@ -521,9 +545,9 @@ export default function Testimonial() {
         };
 
         /*
-         * ============================================================
-         * PERSON SWITCH
-         * ============================================================
+         * --------------------------------------------------
+         * PERSON TOGGLE
+         * --------------------------------------------------
          */
 
         const umschalten = (index) => {
@@ -571,9 +595,9 @@ export default function Testimonial() {
         };
 
         /*
-         * ============================================================
-         * PEOPLE CLICK
-         * ============================================================
+         * --------------------------------------------------
+         * EVENTS
+         * --------------------------------------------------
          */
 
         people.forEach(
@@ -586,15 +610,6 @@ export default function Testimonial() {
             }
         );
 
-        /*
-         * ============================================================
-         * ALL 3 AUDIO BUTTONS ARE ONE LOGICAL BUTTON
-         * ============================================================
-         *
-         * Clicking ANY visible audio control
-         * toggles the same global audioEnabled state.
-         */
-
         audios.forEach(
             (audioElement) => {
                 audioElement.addEventListener(
@@ -605,9 +620,9 @@ export default function Testimonial() {
         );
 
         /*
-         * ============================================================
+         * --------------------------------------------------
          * INITIAL STATE
-         * ============================================================
+         * --------------------------------------------------
          */
 
         people.forEach(
@@ -627,19 +642,9 @@ export default function Testimonial() {
 
         pauseAllVideos();
 
-        /*
-         * First container is the width reference.
-         * First audio is visible because first person is active.
-         */
-
         setupPeopleContainers();
 
         updatePeople(0);
-
-        /*
-         * Make sure all audio icons
-         * share exactly the same initial state.
-         */
 
         setAudioIconState(
             audioEnabled
@@ -649,14 +654,19 @@ export default function Testimonial() {
 
         create();
 
+        /*
+         * После первого layout даем браузеру
+         * закончить текущий rendering cycle,
+         * после чего центрируем первый элемент.
+         */
         requestAnimationFrame(() => {
             centerVideo(0);
         });
 
         /*
-         * ============================================================
+         * --------------------------------------------------
          * RESIZE
-         * ============================================================
+         * --------------------------------------------------
          */
 
         const handleResize = () => {
@@ -687,9 +697,9 @@ export default function Testimonial() {
         }
 
         /*
-         * ============================================================
+         * --------------------------------------------------
          * CLEANUP
-         * ============================================================
+         * --------------------------------------------------
          */
 
         return () => {
@@ -699,6 +709,16 @@ export default function Testimonial() {
                     handleResize
                 );
             }
+
+            people.forEach(
+                (person, index) => {
+                    person.removeEventListener(
+                        "click",
+                        () =>
+                            umschalten(index)
+                    );
+                }
+            );
 
             audios.forEach(
                 (audioElement) => {
@@ -750,6 +770,7 @@ export default function Testimonial() {
                                 src="/home/video/video.mp4"
                                 muted
                                 playsInline
+                                preload="auto"
                             ></video>
 
                             <video
@@ -757,6 +778,7 @@ export default function Testimonial() {
                                 src="/home/video/video.mp4"
                                 muted
                                 playsInline
+                                preload="auto"
                             ></video>
 
                             <video
@@ -764,6 +786,7 @@ export default function Testimonial() {
                                 src="/home/video/video.mp4"
                                 muted
                                 playsInline
+                                preload="auto"
                             ></video>
 
                         </div>
@@ -1034,7 +1057,7 @@ export default function Testimonial() {
                                     xmlns="http://www.w3.org/2000/svg"
                                 >
                                     <path
-                                        d="M457.941 256L504.97 208.971C514.342 199.598 514.342 184.403 504.97 175.03C495.597 165.657 480.402 165.657 471.029 175.03L424 222.059L376.971 175.03C367.598 165.657 352.403 165.657 343.03 175.03C333.658 184.403 333.658 199.598 343.03 208.971L390.059 256L343.03 303.029C333.658 312.402 333.658 327.597 343.03 336.97C347.716 341.657 353.857 344 360 344C366.143 344 372.284 341.657 376.971 336.971L424 289.941L471.029 336.97C475.716 341.657 481.857 344 488 344C494.143 344 500.284 341.657 504.971 336.971C514.343 327.598 514.343 312.403 504.971 303.03L457.941 256Z"
+                                        d="M457.941 256L504.97 208.971C514.342 199.598 514.342 184.403 504.97 175.03C495.597 165.657 480.402 165.657 471.029 175.03L424 222.059L376.971 175.03C367.598 165.657 352.403 165.657 343.03 175.03C333.658 184.403 333.658 199.598 343.03 208.971L390.059 256L343.03 303.029C333.658 312.402 333.658 327.597 343.03 336.97C347.716 341.657 353.857 344 360 344C366.143 344 372.284 341.657 376.971 336.971L424 289.941L471.029 336.97C475.716 341.657 481.857 341.657 488 344C494.143 344 500.284 341.657 504.971 336.971C514.343 327.598 514.343 312.403 504.971 303.03L457.941 256Z"
                                         fill="black"
                                     />
 
