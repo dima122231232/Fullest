@@ -14,143 +14,117 @@ gsap.registerPlugin(Flip);
 export default function Home() {
     const page = useRef(null);
 
-useLayoutEffect(() => {
-    const q = gsap.utils.selector(page);
+    useLayoutEffect(() => {
+        const q = gsap.utils.selector(page);
 
-    const media = q("[data-media]")[0];
-    const target = q("[data-target]")[0];
-    const image = q("[data-poster]")[0];
+        const media = q("[data-media]")[0];
+        const target = q("[data-target]")[0];
+        const image = q("[data-poster]")[0];
 
-    if (!media || !target || !image) return;
+        if (!media || !target || !image) return;
 
-    let cancelled = false;
+        let cancelled = false;
 
-    const waitForPage = async () => {
-        /*
-         * Ждём полной загрузки страницы.
-         */
-        if (document.readyState !== "complete") {
-            await new Promise((resolve) => {
-                window.addEventListener("load", resolve, {
-                    once: true
-                });
-            });
-        }
-
-        /*
-         * Ждём шрифты.
-         */
-        await document.fonts.ready;
-
-        /*
-         * Ждём декодирования Hero image.
-         */
-        if (!image.complete) {
-            await new Promise((resolve) => {
-                image.addEventListener("load", resolve, {
-                    once: true
-                });
-
-                image.addEventListener("error", resolve, {
-                    once: true
-                });
-            });
-        }
-
-        if (image.decode) {
-            try {
-                await image.decode();
-            } catch {}
-        }
-    };
-
-    const waitForCopy = async () => {
-        const copyElements = q("[data-copy-slide]");
-
-        if (copyElements.length === 0) return;
-
-        /*
-         * Copy запускается независимо от этого useLayoutEffect.
-         *
-         * Поэтому ждём, пока ВСЕ Hero Copy-компоненты
-         * закончат свою первоначальную SplitText-инициализацию.
-         */
-        await new Promise((resolve) => {
-            const check = () => {
-                if (cancelled) {
-                    resolve();
-                    return;
-                }
-
-                const ready = copyElements.every((element) =>
-                    element.classList.contains("copy-slide-ready")
-                );
-
-                if (ready) {
-                    resolve();
-                    return;
-                }
-
-                requestAnimationFrame(check);
-            };
-
-            check();
-        });
-    };
-
-    const startAnimation = async () => {
-        /*
-         * 1. Ресурсы
-         */
-        await waitForPage();
-
-        if (cancelled) return;
-
-        /*
-         * 2. SplitText / Copy
-         */
-        await waitForCopy();
-
-        if (cancelled) return;
-
-        /*
-         * 3. После SplitText даём браузеру закончить
-         *    layout + paint.
-         */
-        await new Promise((resolve) => {
-            requestAnimationFrame(() => {
-                requestAnimationFrame(resolve);
-            });
-        });
-
-        if (cancelled) return;
-
-        /*
-         * 4. Теперь layout действительно готов.
-         */
-        const state = Flip.getState(media);
-
-        target.appendChild(media);
-
-        Flip.from(state, {
-            duration: 1.5,
-            ease: "power4.inOut",
-            absolute: true,
-            simple: true,
-            onComplete: () => {
-                gsap.set(media, {
-                    clearProps: "all"
+        const waitForPage = async () => {
+            if (document.readyState !== "complete") {
+                await new Promise((resolve) => {
+                    window.addEventListener("load", resolve, {
+                        once: true
+                    });
                 });
             }
-        });
-    };
 
-    startAnimation();
+            await document.fonts.ready;
 
-    return () => {
-        cancelled = true;
-    };
-}, []);
+            if (!image.complete) {
+                await new Promise((resolve) => {
+                    image.addEventListener("load", resolve, {
+                        once: true
+                    });
+
+                    image.addEventListener("error", resolve, {
+                        once: true
+                    });
+                });
+            }
+
+            if (image.decode) {
+                try {
+                    await image.decode();
+                } catch {}
+            }
+        };
+
+        const waitForCopy = async () => {
+            const copyElements = q("[data-copy-slide]");
+
+            if (copyElements.length === 0) return;
+
+
+            await new Promise((resolve) => {
+                const check = () => {
+                    if (cancelled) {
+                        resolve();
+                        return;
+                    }
+
+                    const ready = copyElements.every((element) =>
+                        element.classList.contains("copy-slide-ready")
+                    );
+
+                    if (ready) {
+                        resolve();
+                        return;
+                    }
+
+                    requestAnimationFrame(check);
+                };
+
+                check();
+            });
+        };
+
+        const startAnimation = async () => {
+            await waitForPage();
+
+            if (cancelled) return;
+
+            await waitForCopy();
+
+            if (cancelled) return;
+
+            await new Promise((resolve) => {
+                requestAnimationFrame(() => {
+                    requestAnimationFrame(resolve);
+                });
+            });
+
+            if (cancelled) return;
+
+     
+            const state = Flip.getState(media);
+
+            target.appendChild(media);
+
+            Flip.from(state, {
+                duration: 1.5,
+                ease: "power4.inOut",
+                absolute: true,
+                simple: true,
+                onComplete: () => {
+                    gsap.set(media, {
+                        clearProps: "all"
+                    });
+                }
+            });
+        };
+
+        startAnimation();
+
+        return () => {
+            cancelled = true;
+        };
+    }, []);
 
     return (
         <main ref={page}>

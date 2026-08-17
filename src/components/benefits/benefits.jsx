@@ -20,7 +20,6 @@ export default function Benefits(){
         const backThree = q(".back-circles.three");
         const pill = q(".benefits__pill-img")[0];
 
-        const pills = Array.from({ length: 9 }, (_, i) => `/pills/pill-${i + 1}.png`);
 
         gsap.set(backOne, { yPercent: 100 });
         gsap.set(backThree, { yPercent: -100 });
@@ -35,15 +34,7 @@ export default function Benefits(){
                 pin: isMobile ? false : true,
                 pinSpacing: true,
                 scrub: true,
-                invalidateOnRefresh: true,
-                onUpdate: (self) => {
-                    if (!isMobile){
-                        const imageIndex = Math.round(
-                            gsap.utils.interpolate(1, 9, self.progress)
-                        );
-                        pill.src = `/pills/pill-${imageIndex}.png`;
-                    }
-                }
+                invalidateOnRefresh: true
             }
         });
 
@@ -72,7 +63,7 @@ export default function Benefits(){
                         <div className="back-circles two"></div>
                         <div className="back-circles three"></div>
 
-                        <img src="/pills/pill-9.png" alt="pill" className="benefits__pill-img"/>
+                        <img src="/pills/pill-benefits.png" alt="pill" className="benefits__pill-img"/>
 
                         <div className="front-circles one"></div>
                         <div className="front-circles two"></div>

@@ -2,21 +2,17 @@
 
 import { createContext, useContext, useEffect, useState } from "react";
 import Lenis from "lenis";
-import type { LenisOptions } from "lenis";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 gsap.registerPlugin(ScrollTrigger);
 
-const LenisContext = createContext<Lenis | null>(null);
+const LenisContext = createContext(null);
+
 export const useLenis = () => useContext(LenisContext);
 
-export default function LenisProvider({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
-  const [lenis, setLenis] = useState<Lenis | null>(null);
+export default function LenisProvider({ children }) {
+  const [lenis, setLenis] = useState(null);
 
   useEffect(() => {
     const ua = navigator.userAgent;
@@ -25,30 +21,34 @@ export default function LenisProvider({
     const isAndroid = /Android/.test(ua);
     const isTouch = "ontouchstart" in window;
 
-    const options: LenisOptions = {
+    const options = {
       autoRaf: false,
 
-      duration:1.2,
+      duration: 1.2,
+
       easing: isTouch
-        ? (t) => 1 - Math.pow(1 - t, 5) 
+        ? (t) => 1 - Math.pow(1 - t, 5)
         : (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
 
       smoothWheel: true,
 
       smoothTouch: isIOS ? false : true,
       syncTouch: isIOS ? false : true,
+
       touchMultiplier: isAndroid ? 1.2 : 1,
 
       wheelMultiplier: 1,
+
       anchors: true,
     };
 
     const instance = new Lenis(options);
+
     setLenis(instance);
 
     instance.on("scroll", ScrollTrigger.update);
 
-    const update = (time: number) => {
+    const update = (time) => {
       instance.raf(time * 1000);
     };
 
@@ -58,10 +58,14 @@ export default function LenisProvider({
     ScrollTrigger.scrollerProxy(document.body, {
       scrollTop(value) {
         if (arguments.length) {
-          instance.scrollTo(value, { immediate: true });
+          instance.scrollTo(value, {
+            immediate: true,
+          });
         }
+
         return instance.scroll;
       },
+
       getBoundingClientRect() {
         return {
           top: 0,
@@ -76,7 +80,10 @@ export default function LenisProvider({
 
     return () => {
       gsap.ticker.remove(update);
+
       instance.destroy();
+
+      setLenis(null);
     };
   }, []);
 
